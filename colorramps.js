@@ -1,0 +1,132 @@
+var colorMaps = {
+    Slope: ["#55B62BFF", "#65BF2BFF", "#76C92BFF", "#87D32BFF", "#9EDE2BFF", "#B5E92BFF", "#CCF42CFF", "#D9F12CFF", "#E7ED2CFF", "#F5E92CFF", "#F8CA2CFF", "#FBAA2CFF", "#FF8A2BFF", "#FF6E2BFF", "#FF522BFF", "#FF362BFF"],
+	Elevation: ["#B0F1E5FF", "#B1F4C3FF", "#D5FAB5FF", "#DBF19BFF", "#5BBD42FF", "#1F993AFF", "#31943CFF", "#81A937FF", "#DEBF0EFF", "#D47C03FF", "#AE3500FF", "#860A00FF", "#7C2D00FF", "#A3856BFF", "#D7D8D8FF", "#FFFFFFFF"],
+	Elevation1: ["#4AA243FF", "#77BC70FF", "#A4DB98FF", "#F1F3DDFF", "#EDF3C3FF", "#EDE671FF", "#DED33BFF", "#D2B438FF", "#BD8236FF", "#B77739FF", "#A3703CFF", "#96864FFF", "#B2BBBAFF", "#E4E9EAFF", "#F4F8FAFF", "#FFFFFFFF"],
+    GreyScale: [
+        "#000000FF",
+        "#111111FF",
+        "#222222FF",
+        "#333333FF",
+        "#444444FF",
+        "#555555FF",
+        "#666666FF",
+        "#777777FF",
+        "#888888FF",
+        "#999999FF",
+        "#AAAAAAFF",
+        "#BABABAFF",
+        "#CBCBCBFF",
+        "#DCDCDCFF",
+        "#EDEDEDFF",
+        "#FFFFFFFF"
+    ],
+    GreyScale2: [
+        "#FFFFFFFF",
+        "#EDEDEDFF",
+        "#DCDCDCFF",
+        "#CBCBCBFF",
+        "#BABABAFF",
+        "#AAAAAAFF",
+        "#999999FF",
+        "#888888FF",
+        "#777777FF",
+        "#666666FF",
+        "#555555FF",
+        "#444444FF",
+        "#333333FF",
+        "#222222FF",
+        "#111111FF",
+        "#000000FF"
+    ],
+	MutedTerrain: [
+        "#CEE1E8FF",
+        "#A8D0D1FF",
+        "#82BFB9FF",
+        "#7EB999FF",
+        "#81B577FF",
+        "#88B871FF",
+        "#90BF76FF",
+        "#A4C97EFF",
+        "#C0D687FF",
+        "#D6E097FF",
+        "#E3E7B1FF",
+        "#E9E4C1FF",
+        "#DAC8BAFF",
+        "#CCAEB1FF",
+        "#CBA39BFF",
+        "#C99884FF"
+    ],
+	LightToDarkGreen: [
+        "#E8EDDBFF",
+        "#E3EBD8FF",
+        "#DDE9D5FF",
+        "#D0E3C5FF",
+        "#C2DDB3FF",
+        "#B4D7A1FF",
+        "#A6D290FF",
+        "#98CD7EFF",
+        "#8AC86CFF",
+        "#77C15CFF",
+        "#5DB751FF",
+        "#45AD48FF",
+        "#2FA648FF",
+        "#1E9D48FF",
+        "#2C853FFF",
+        "#3A6D35FF"
+    ],
+    Viridis: [
+        "#440154FF",
+        "#481A6CFF",
+        "#472F7DFF",
+        "#414487FF",
+        "#39568CFF",
+        "#31688EFF",
+        "#2A788EFF",
+        "#23888EFF",
+        "#1F988BFF",
+        "#22A884FF",
+        "#35B779FF",
+        "#54C568FF",
+        "#7AD151FF",
+        "#A5DB36FF",
+        "#D2E21BFF",
+        "#FDE725FF"
+    ],
+    Inferno: [
+        "#000004FF",
+        "#0C0826FF",
+        "#240C4FFF",
+        "#420A68FF",
+        "#5D126EFF",
+        "#781C6DFF",
+        "#932667FF",
+        "#AE305CFF",
+        "#C73E4CFF",
+        "#DD513AFF",
+        "#ED6925FF",
+        "#F8850FFF",
+        "#FCA50AFF",
+        "#FAC62DFF",
+        "#F2E661FF",
+        "#FCFFA4FF"
+    ]
+};
+
+var slopeGrades = [-3, 1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 100];
+
+var demGrades = [-5, 10, 25, 50, 100, 200, 400, 800, 1000, 2000, 1000, 2000, 3000, 4000, 5000, 6000];
+// var legendGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+var legendGrid = new Array(demGrades.length).fill(1)
+
+var transparentHex = {
+    10: "1A",
+    20: "33",
+    30: "4D",
+    40: "66",
+    50: "80",
+    60: "99",
+    70: "B3",
+    80: "CC",
+    90: "E6",
+    100: "FF"
+};

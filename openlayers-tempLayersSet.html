@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>0319请求临时资源出图</title>
+
+    <link href="libs/dist/openlayers/4.6.5/ol.css" rel="stylesheet">
+    <script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol.js"></script>
+    <script type="text/javascript" src="libs/dist/openlayers/iclient9-openlayers.min.js"></script>
+
+
+    <!-- <script src="./libs/SuperMap.Include.js"></script> -->
+    <script type="text/javascript" src="./json_parse.js"></script>
+    <script type="text/javascript" src="./toJSON.js"></script>
+
+
+    <style>
+        .map {
+            height: 600px;
+            width: 80%;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div id="map" class="map">
+        <button id="add" onclick="addLayer()">请求临时资源并出图</button>
+    </div>
+
+
+    <script type="text/javascript">
+
+        //初始化地图控件以及osm地图
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults(),
+            interactions: ol.interaction.defaults(),
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    wrapX: true
+                })
+            ],
+            view: new ol.View({
+                center: [0.0, 0.0],
+                zoom: 2,
+                projection: 'EPSG:4326'
+            })
+
+
+        });
+
+
+        //点击按钮发送post请求，生成templayerset,返回结果，添加到地图窗口
+        function addLayer() {
+
+            console.log("请求临时资源");
+            var mapName = "china";
+            var url = "http://192.168.113.209:7090/iserver/services/map-Chinaslope/rest/maps/" + mapName;
+            var layersUrl = url + "/layers/" + mapName + ".json";
+
+
+            fetch(layersUrl).then(function (response) {
+                response.json().then(function (layersObj) {
+                    console.log(layersObj);
+
+					layersObj.displayMode='SINGLE';
+					layersObj.type='GEOTRELLISIMAGELAYER';
+					layersObj.colorMap="0:ffffe5ff;7:f7fcb9ff;14:d9f0a3ff;21:addd8eff;28:78c679ff;35:41ab5dff;42:238443ff;49:006837ff;57:004529ff";
+                    
+  
+                    var commit = getcommit();
+                    var uri = url + "/tempLayersSet.json";
+
+                    // var entry = getJsonParameters(layersObj);
+                    var str = "[" + SuperMap.Util.toJSON(layersObj) + "]";
+
+                    console.log(str);
+                    
+                    commit.open("POST", encodeURI(uri), false, "", "");
+                    commit.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    commit.send(str);
+
+                   
+                    var response = json_parse(commit.responseText, null);
+
+
+                    //获取请求返回的layrid
+                    var layersID = response.newResourceID;
+
+                    console.log("请求得到的临时图层id为：" + layersID);
+
+
+                    if (layersID) {
+                        var themeLayer = new ol.layer.Tile({
+                            source: new ol.source.TileSuperMapRest({
+                                url: url,
+                                noWrap: true,
+                                cacheEnabled: false,
+                                transparent: true,
+                                layersID: layersID,
+                                transparent: true
+                            })
+                        });
+                        map.addLayer(themeLayer);
+                    }
+
+                });
+            });
+
+
+        }
+
+        function json2str(o) { 
+            var arr = []; 
+            var fmt = function(s) { 
+            if (typeof s == 'object' && s != null) return json2str(s); 
+            return /^(string|number)$/.test(typeof s) ? "'" + s + "'" : s; 
+            } 
+            for (var i in o) arr.push("'" + i + "':" + fmt(o[i])); 
+            return '{' + arr.join(',') + '}'; 
+        } 
+
+        function getJsonParameters(parameter) {
+            var jsonParameters = "",
+                themeType = "",
+                themeObj = null,
+                filters = null,
+                orderBys = null;
+            jsonParameters += "[{'type': 'UGC','subLayers': {'layers': [";
+            for (var layerID in parameter.subLayers.layers) {
+                layerObj = parameter.subLayers.layers[layerID];
+                var jsonTheme = SuperMap.Util.toJSON(layerObj);
+                jsonTheme = jsonTheme.slice(0, -1);
+
+                jsonParameters += "{'type': 'UGC','ugcLayerType': 'vector',";
+                filters = layerObj.displayFilters;
+                if (filters && filters.length > 0) {
+                    if (filters.length === 1) {
+                        jsonParameters += "'displayFilter':\"" + filters[0] + "\",";
+                    } else {
+                        jsonParameters += "'displayFilter':\"" + filters[themeID] + "\",";
+                    }
+                }
+                orderBys = parameter.displayOrderBys;
+                if (orderBys && orderBys.length > 0) {
+                    if (orderBys.length === 1) {
+                        jsonParameters += "'displayOrderBy':'" + orderBys[0] + "',";
+                    } else {
+                        jsonParameters += "'displayOrderBy':'" + orderBys[themeID] + "',";
+                    }
+                }
+
+                if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[themeID]) {
+                    jsonParameters += "'joinItems':[" + SuperMap.Util.toJSON(parameter.joinItems[themeID]) + "],";
+                }
+                if (parameter.datasetNames && parameter.dataSourceNames) {
+                    jsonParameters += "'datasetInfo': {'name': '" + parameter.datasetNames[0] +
+                        "','dataSourceName': '" + parameter.dataSourceNames[0] + "'}},";
+                } else {
+                    jsonParameters += "},";
+                }
+            }
+
+
+            if (parameter.themes && parameter.themes.length > 0) {
+                jsonParameters = jsonParameters.substring(0, jsonParameters.length - 1);
+            }
+            jsonParameters += "]}";
+
+            jsonParameters += "}]";
+            return jsonParameters;
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>
