@@ -69,17 +69,17 @@
                     <input type="text" name="fieldName" value="Area" onfocus="if (value =='Area'){value =''}"
                         onblur="if (value ==''){value='Area'}">
                 </div>
-                <div class="Fmid-1">
+                <!-- <div class="Fmid-1">
                     <span class="Fmid-1-one">变化检测计算表达式<span class="defaltvalue">*</span></span>
                     <input type="text" name="expression" value="abs(TNMJ-TBMJ_1)/BTMJ"
                         onfocus="if (value =='abs(TNMJ-TBMJ_1)/BTMJ'){value =''}"
                         onblur="if (value ==''){value='abs(TNMJ-TBMJ_1)/BTMJ'}">
-                </div>
-                <div class="Fmid-1">
+                </div> -->
+                <!-- <div class="Fmid-1">
                     <span class="Fmid-1-one">变化检测结果字段<span class="defaltvalue">*</span></span>
                     <input type="text" name="变化检测结果字段" value="difference"
                         onfocus="if (value =='difference'){value =''}" onblur="if (value ==''){value='difference'}">
-                </div>
+                </div> -->
                 <div class="Fmid-1">
                     <span class="Fmid-1-one">属性统计表达式</span>
                     <input type="text" name="stats" value="Area,Sum,Area"
@@ -91,7 +91,7 @@
                     <input type="text" name="groupFields" value="DLMC,DLMC_1"
                         onfocus="if (value =='DLMC,DLMC_1'){value =''}" onblur="if (value ==''){value='DLMC,DLMC_1'}">
                 </div>
-                <div class="Fmid-1">
+                <!-- <div class="Fmid-1">
                     <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
                     <input type="text" name="server">
                 </div>
@@ -99,11 +99,13 @@
                     <span class="Fmid-1-one">叠加结果数据集名<span class="defaltvalue">*</span></span>
                     <input type="text" name="outputDatasetName" value="DLTB_Union"
                         onfocus="if (value =='DLTB_Union'){value =''}" onblur="if (value ==''){value='DLTB_Union'}">
-                </div>
-                <div class="Fmid-1">
+                </div> -->
+
+
+                <!-- <div class="Fmid-1">
                     <span class="Fmid-1-one">属性统计结果保存路径<span class="defaltvalue">*</span></span>
                     <input type="text" name="path">
-                </div>
+                </div> -->
                 <!-- <div class="Fmid-1">
                     <span class="Fmid-1-one">属性统计结果数据集名<span class="defaltvalue">*</span></span>
                     <input type="text" name="属性统计结果数据集名" value="summarize"
@@ -139,20 +141,20 @@
             for (var i in formData) {
                 jsonObj[formData[i].name] = formData[i].value;
             }
-            // console.log(jsonObj); // object 表单json
+            console.log(jsonObj); // object 表单json
             
             var ajax = new Ajax();
             ajax.get('./form1.json', { path: {} }, function (data) {
-                // console.log(data); // string
+                console.log(data); // string
 
                 var Adata = JSON.parse(data); // 外部json
-                // console.log(Adata);// object
+                console.log(Adata);// object
 
-                /* Adata["processes"]["dfe5eb0f_909108"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = jsonObj["dfe5eb0f_909108"]; // 一调地类图斑数据路径
-                Adata["processes"]["272ac237_dc218e"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = jsonObj["272ac237_dc218e"];  // 二调地类图斑数据路径 */
+                Adata["processes"]["dfe5eb0f_909108"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = jsonObj["dfe5eb0f_909108"]; // 一调地类图斑数据路径
+                Adata["processes"]["272ac237_dc218e"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = jsonObj["272ac237_dc218e"];  // 二调地类图斑数据路径
                 Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["operator"] = jsonObj["operator"]; // 叠加分析运算类型
 
-                /* Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["sourceFields"]= jsonObj["sourceFields"]; */ // 叠加数据集中保留的字段
+                 Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["sourceFields"]= jsonObj["sourceFields"];  // 叠加数据集中保留的字段
 
                 Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["tolerance"] = jsonObj["tolerance"]; // 容差
                 Adata["processes"]["2e857934_9b5c06"]["fieldName"] = jsonObj["fieldName"]; // 面积计算字段
@@ -160,16 +162,16 @@
                 // Adata["processes"]["c2593078_f6734"]["expression"] = jsonObj["expression"]; // 变化检测计算表达式
                 
 
-                /* Adata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["stats"] = jsonObj["stats"]; */ // 属性统计表达式
-                /* Adata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["groupFields"] = jsonObj["groupFields"]; */ // 属性统计分组字段
+                 Adata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["stats"] = jsonObj["stats"];  // 属性统计表达式
+                 Adata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["groupFields"] = jsonObj["groupFields"];  // 属性统计分组字段
 
                 // Adata["processes"]["b22a2f56_523b7"]["bdt-vec-io:SaveAsSDX"]["server"] = jsonObj["server"];  // 叠加结果保存路径
 
                 // Adata["processes"]["b22a2f56_523b7"]["outputDatasetName"]= jsonObj["outputDatasetName"]; // 叠加结果数据集名
 
-                Adata["processes"]["c0e6a457_de4748"]["bdt-vec-io:SaveAsSimpleJson"]["path"] = jsonObj["path"]; // 属性统计结果保存路径
 
-                // console.log(Adata);
+
+                console.log(Adata);
 
                 var dataJson = JSON.stringify(Adata);
                 // console.log(typeof(dataJson));
