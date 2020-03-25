@@ -269,65 +269,10 @@
 <script type="text/javascript" src="./json_parse.js"></script>
 <script type="text/javascript" src="./toJSON.js"></script>
 <script type="text/javascript" src="./colorramps.js"></script>
+<script type="text/javascript" src="./InitMap.js"></script>
 <script>
-    var serverHost = "http://192.168.17.42:8099";
-    var mapUrl =
-        serverHost +
-        "/iserver/services/map-catalog/rest/maps/DEM30_4326",
-        dataUrl = serverHost + "/iserver/services/data-catalog/rest/data/",
-        imageUrl =
-            serverHost +
-            "/iserver/services/map-catalog/rest/maps/DEM30_4326",
-        demUrl =
-            serverHost +
-            "/iserver/services/map-catalog/rest/maps/DEM30_4326";
-
-    var requestUrl =
-        dataUrl + "datasources/catalog/datasets/DEM30_4326";
-    var colorMapReq = {
-        slope: {},
-        dem: {}
-    };
-    var themeCacheMap = {
-        slope: {},
-        dem: {}
-    };
-    var themeLayer;
-
-    var overlay = new ol.Overlay({
-        element: document.getElementById("popup"),
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
-
     var url = "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
-
-    // 初始化地图信息
-    var map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: [0, 0],
-            zoom: 3,
-            projection: 'EPSG:4326'
-        })
-    });
-    // 添加图层
-    var layer = new ol.layer.Tile({
-        source: new ol.source.TileSuperMapRest({
-            url: url,
-            wrapX: true
-        }),
-        projection: 'EPSG:4326'
-    });
-    map.addLayer(layer);
-
-    // 比例尺控件
-    scaleControl = new ol.control.ScaleLine();
-    map.addControl(scaleControl);
+    init(url);
 </script>
 </body>
 
