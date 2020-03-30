@@ -100,3 +100,36 @@
 #Fbtn:hover {
   color: white;
 }
+#table {
+  width: 700px;
+  height:auto;
+  border: #ccc solid 1px;
+  background: white;
+  position: absolute;
+  top: 100px;
+  left: 50px;
+}
+#table{
+  background-color: #ccc;
+}
+
+#table tr{
+  display: none;
+  border: black solid 1px;
+
+}
+#table td{
+  font-size: 15px;
+  text-align: center;
+}
+#table ul{
+  background: #337ab7;
+}
+#table ul>li{
+  font-size: 13px;
+  list-style: none;
+  float: left;
+
+  margin: 10px 0 5px 3px;
+}
+
