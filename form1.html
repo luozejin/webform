@@ -40,12 +40,12 @@
         <div class="Fmid">
             <div class="Fmid-1">
                 <span class="Fmid-1-one">一调地类图斑数据路径<span class="defaltvalue">*</span></span>
-                <input type="text" name="dfe5eb0f_909108">
+                <input type="text" name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
             </div>
 
             <div class="Fmid-1">
                 <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
-                <input type="text" name="272ac237_dc218e">
+                <input type="text" name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
             </div>
 
             <div class="Fmid-1">
@@ -100,7 +100,7 @@
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
-                <input type="text" name="server">
+                <input type="text" name="saveas">
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果数据集名<span class="defaltvalue">*</span></span>
@@ -113,16 +113,19 @@
     </form>
 
     <!-- 属性表 -->
-    <table id="table">
+    <div class="attributeTable">
+        <table id="table">
 
-         <!-- 分页  -->
-         <!-- <ul>
-             <li class="next"></li>
-             <li class="prev"></li>
-             <li class="total"></li>
-             <li class="cur_page"></li>
-         </ul> -->
-    </table>
+            <!-- 分页  -->
+            <!-- <ul>
+                <li class="next"></li>
+                <li class="prev"></li>
+                <li class="total"></li>
+                <li class="cur_page"></li>
+            </ul> -->
+       </table>
+    </div>
+    
 
 </div>
 <script>
@@ -146,87 +149,107 @@
 <script type="text/javascript">
     var Adata = {
         "processes": {
-            "dfe5eb0f_909108": {
-                "bdt-vec-io:ReadAsFeatureRDD": {
-                    "dataConnInfo": "sdx --server=E:\\Jin\\work\\2020.03.05\\ChangeDetection_sample1\\Landuse.udbx --dbType=UDBX --dataset=DLTB"
+            "f2fccedf-7f51-4641-9a57-9aa4cd5e7058": {
+                "readasfeaturerdd": {
+                    "dataConnInfo":"sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
                 }
             },
-            "272ac237_dc218e": {
-                "bdt-vec-io:ReadAsFeatureRDD": {
-                    "dataConnInfo": "sdx --server=E:\\Jin\\work\\2020.03.05\\ChangeDetection_sample1\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
+            "20ef9b62-03f6-43b2-904c-141f8d648aa4": {
+                "readasfeaturerdd": {
+                    "dataConnInfo":"sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB"
                 }
             },
-            "2e769436_07778c": {
-                "bdt-vec:OverlayAnalyst": {
+            "92693d20-db9d-42cc-8747-369db3605464": {
+                "overlayanalyst": {
                     "sourceFields": [
                         "TBMJ",
                         "DLMC"
                     ],
-                    "overlayFields": [
-                        "TBMJ",
-                        "DLMC"
-                    ],
-                    "operator": "Union",
-                    "tolerance": "0.0",
-                    "isIniProcess": "true",
-                    "isReturnSingleGeometry": "true"
+                "overlayFields": [
+                    "TBMJ",
+                    "DLMC"
+                ],
+                "operator":"Intersect",
+                "tolerance":"0.0",
+                "isIniProcess":"true",
+                "isReturnSingleGeometry":"true"
                 }
             },
-            "2e857934_9b5c06": {
-                "bdt-vec:CalculateArea": {
-                    "fieldName": "Area",
-                    "isPreciseArea": "false"
+            "0d786a6a-59a1-42b9-b507-67f5500dfcc7": {
+                "calculatearea": {
+                    "fieldName":"Area",
+                    "isPreciseArea":"false"
                 }
             },
-            "c2593078_f6734": {
-                "bdt-vec:CalculateField": {
-                    "fieldName":"diff_pro",
+            "1a58d3cd-ac14-453f-8302-7f65f1eb1c5e": {
+                "calculatefield": { 
+                    "fieldName":"rate",
                     "fieldType":"double",
                     "expression":"abs(TBMJ - TBMJ_1) / TBMJ"
                 }
             },
-            "b22a2f56_523b7": {
-                "bdt-vec-io:SaveAsSDX": {
-                    "server":"E:\\Jin\\work\\2020.03.05\\ChangeDetection_sample1\\result.udbx",
-                    "alias":"unionresult",
-                    "outputDatasetName":"unionresult",
-                    "blockingWrite":"true"
-           }
-       },
-            "dc526205_3bd3e": {
+            "36a48921-4298-409f-81df-c83c9c7ce98e": {
+                "summarizeattributes": {
+                    "stats": [
+                        "Area,Sum,Area"
+                    ],
+                    "groupFields": [
+                        "DLMC",
+                        "DLMC_1"
+                    ]
+                }
+            },
+            "8d0a7851-8fa7-42f0-beda-6af47c36c207": {
+                "saveas": {
+                    "dataConnInfo":"sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
+                }
+            },
+            "63f307ac-afed-4720-bbfd-423ac68a0ff9": {
                 "publishmap": {
                     "server":"http://localhost:8090",
                     "user":"luozejin",
                     "password":"a.201997",
-                    "mapName":"土地利用类型变化检测",
                     "isEditable":"false"
+                }
+            },
+            "b75c4152_cc303": {
+                "printfeaturerddtojson": {
+                    "num":"-1"
                 }
             }
         },
         "connect": [
             {
-                "from":"dfe5eb0f_909108|result",
-                "to":"2e769436_07778c|sourceRDD"
+                "from":"1a58d3cd-ac14-453f-8302-7f65f1eb1c5e|featureRDD",
+                "to":"8d0a7851-8fa7-42f0-beda-6af47c36c207|featureRdd"
             },
             {
-                "from":"272ac237_dc218e|result",
-                "to":"2e769436_07778c|overlayRDD"
+                "from":"8d0a7851-8fa7-42f0-beda-6af47c36c207|isSuccessful",
+                "to":"63f307ac-afed-4720-bbfd-423ac68a0ff9|dataConnection"
             },
             {
-                "from":"2e769436_07778c|result",
-                "to":"2e857934_9b5c06|featureRDD"
+                "from":"f2fccedf-7f51-4641-9a57-9aa4cd5e7058|featureRDD",
+                "to":"92693d20-db9d-42cc-8747-369db3605464|overlayRDD"
             },
             {
-                "from":"2e857934_9b5c06|result",
-                "to":"c2593078_f6734|featureRDD"
+                "from":"0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD",
+                "to":"36a48921-4298-409f-81df-c83c9c7ce98e|summarizedRDD"
             },
             {
-                "from":"c2593078_f6734|result",
-                "to":"b22a2f56_523b7|featureRDD"
+                "from":"0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD",
+                "to":"1a58d3cd-ac14-453f-8302-7f65f1eb1c5e|featureRDD"
             },
             {
-                "from":"b22a2f56_523b7|result",
-                "to":"dc526205_3bd3e|dataConnection"
+                "from":"20ef9b62-03f6-43b2-904c-141f8d648aa4|featureRDD",
+                "to":"92693d20-db9d-42cc-8747-369db3605464|sourceRDD"
+            },
+            {
+                "from":"92693d20-db9d-42cc-8747-369db3605464|featureRDD",
+                "to":"0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD"
+            },
+            {
+                "from":"36a48921-4298-409f-81df-c83c9c7ce98e|featureRDD",
+                "to":"b75c4152_cc303|featureRDD"
             }
         ],
         "env": {
@@ -237,219 +260,60 @@
         "ui":{}
     };
 
-    var Fdata = {
-        "processes": {
-            "dfe5eb0f_909108": {
-                "bdt-vec-io:ReadAsFeatureRDD": {
-                    "dataConnInfo": "sdx --server=E:\\Jin\\work\\2020.03.05\\ChangeDetection_sample1\\Landuse.udbx --dbType=UDBX --dataset=DLTB"
-                }
-            },
-            "272ac237_dc218e": {
-                "bdt-vec-io:ReadAsFeatureRDD": {
-                    "dataConnInfo": "sdx --server=E:\\Jin\\work\\2020.03.05\\ChangeDetection_sample1\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
-                }
-            },
-            "2e769436_07778c": {
-                "bdt-vec:OverlayAnalyst": {
-                    "sourceFields": [
-                        "TBMJ",
-                        "DLMC"
-                    ],
-                    "overlayFields": [
-                        "TBMJ",
-                        "DLMC"
-                    ],
-                    "operator": "Union",
-                    "tolerance": "0.0",
-                    "isIniProcess": "true",
-                    "isReturnSingleGeometry": "true"
-                }
-            },
-            "2e857934_9b5c06": {
-                "bdt-vec:CalculateArea": {
-                    "fieldName": "Area",
-                    "isPreciseArea": "false"
-                }
-            },
-            "42d8ca5a_d83ba4": {
-                "bdt-vec:SummarizeAttributes": {
-                    "stats": [
-                        "Area,Sum,Area"
-                    ],
-                    "groupFields": [
-                        "DLMC",
-                        "DLMC_1"
-                    ]
-                }
-            },
-            "551413a0_2e3f7c": {
-                "bdt-vec:PrintFeatureRDDToJson": {
-                    "num": "-1"
-                }
-            }
-        },
-        "connect": [
-            {
-                "from": "dfe5eb0f_909108|result",
-                "to": "2e769436_07778c|sourceRDD"
-            },
-            {
-                "from": "272ac237_dc218e|result",
-                "to": "2e769436_07778c|overlayRDD"
-            },
-            {
-                "from": "2e769436_07778c|result",
-                "to": "2e857934_9b5c06|featureRDD"
-            },
-            {
-                "from": "2e857934_9b5c06|result",
-                "to": "42d8ca5a_d83ba4|summarizedRDD"
-            },
-            {
-                "from": "42d8ca5a_d83ba4|result",
-                "to": "551413a0_2e3f7c|featureRDD"
-            }
-        ],
-        "env": {
-            "master": "",
-            "appName": "",
-            "settings": ""
-        },
-        "ui": {}
-    };
-
-    // $('#Fbit').click(function () {
-    //     var formData = $('#boxs').serializeArray();
-    //     var jsonObj = {};
-    //     for (var i in formData) {
-    //         jsonObj[formData[i].name] = formData[i].value;
-    //     }
-    //     // console.log(jsonObj); // object 表单json
-    //     // console.log(data); // string
-    //     Adata["processes"]["dfe5eb0f_909108"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = jsonObj["dfe5eb0f_909108"]; // 一调地类图斑数据路径
-    //     Adata["processes"]["272ac237_dc218e"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = jsonObj["272ac237_dc218e"];  // 二调地类图斑数据路径
-    //     Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["operator"] = jsonObj["operator"]; // 叠加分析运算类型
-    //     Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["sourceFields"] = jsonObj["sourceFields"].split(",");  // 叠加数据集中保留的字段
-    //     Adata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["tolerance"] = jsonObj["tolerance"]; // 容差
-    //     Adata["processes"]["2e857934_9b5c06"]["bdt-vec:CalculateArea"]["fieldName"] = jsonObj["fieldName"]; // 面积计算字段
-
-
-    //     Adata["processes"]["c2593078_f6734"]["bdt-vec:CalculateField"]["expression"] = jsonObj["expression"]; // 变化检测计算表达式
-    //     // Adata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["stats"] = jsonObj["stats"].split(";");  // 属性统计表达式
-    //     // Adata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["groupFields"] = jsonObj["groupFields"].split(",");  // 属性统计分组字段
-
-    //     Adata["processes"]["b22a2f56_523b7"]["bdt-vec-io:SaveAsSDX"]["server"] = jsonObj["server"];  // 叠加结果保存路径
-    //     Adata["processes"]["b22a2f56_523b7"]["outputDatasetName"]= jsonObj["outputDatasetName"]; // 叠加结果数据集名
-
-    //     var dataJson = JSON.stringify(Adata);
-    //     // console.log(dataJson);
-    //     // console.log(typeof(dataJson));
-    //     onSubmit(dataJson)
-    // });
-    // function onSubmit(dataJson) {
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: 'http://localhost:8097/geoprocessing/multiprocess',
-    //         data: dataJson,
-    //         contentType: 'application/json',
-    //         success: function (Adata) {
-    //             var Apath = JSON.parse(Adata);
-    //             console.log(Apata);
-                
-    //             for(var i = 0; i < Apath.length; i++) {
-    //                 // console.log(Apath[i]);
-    //                 console.log(Apath[i].serviceAddress);  
-    //                 var mapUrl = Apath[i].serviceAddress + "/maps/%E5%9C%9F%E5%9C%B0%E5%88%A9%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%8F%98%E5%8C%96%E6%A3%80%E6%B5%8B";
-    //                 var url = mapUrl;
-
-    //                 // var map, url = "http://localhost:8090/iserver/services/map-temp-261327657/rest/maps/%E5%9C%9F%E5%9C%B0%E5%88%A9%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%8F%98%E5%8C%96%E6%A3%80%E6%B5%8B";
-                    
-                    
-    //                 var extent = [38484026.53, 4411156.34, 38497031.32, 4422701.44 ];
-    //                 var projection = new ol.proj.Projection({
-    //                     code:'',
-    //                     extent: extent,
-    //                     units: 'm',
-    //                     getPointResolution:function(resolution, point){
-    //                         return resolution
-    //                     }
-    //                 });
-    //                 new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
-    //                     var mapJSONObj = serviceResult.result;
-    //                     console.log(mapJSONObj);
-    //                     x = mapJSONObj.center.x;
-    //                     y = mapJSONObj.center.y;
-    //                     epsgCode = mapJSONObj.prjCoordSys.epsgCode
-    //                     console.log(x,y,epsgCode);
-                        
-                        
-    //                     var map = new ol.Map({
-    //                         target: 'map',
-    //                         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-    //                             .extend([new ol.supermap.control.Logo()]),
-    //                         view: new ol.View({
-    //                             center: [x, y],
-    //                             zoom: 1,
-    //                             projection: projection,
-    //                             origin: [48.4, -55.58],
-    //                             multiWorld: true
-    //                         })
-    //                     });
-    //                     var layer = new ol.layer.Tile({
-    //                         source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
-    //                     });
-    //                     map.addLayer(layer);
-    //                     map.addControl(new ol.supermap.control.ScaleLine());
-    //                 });
-    //             }
-    //         },
-    //         error: function (jqXHR) {
-    //             console.log(jqXHR);
-    //         }
-    //     });
    
-    // }           
-    $('#Fbit').click(function () {
-        var FormData = $('#boxs').serializeArray();
-        var JsonObj = {};
-        for (var i in FormData) {
-            JsonObj[FormData[i].name] = FormData[i].value;
-        }
-        // console.log(JsonObj); // object 表单json
-        // console.log(data); // string
-        Fdata["processes"]["dfe5eb0f_909108"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = JsonObj["dfe5eb0f_909108"]; // 一调地类图斑数据路径
-        Fdata["processes"]["272ac237_dc218e"]["bdt-vec-io:ReadAsFeatureRDD"]["dataConnInfo"] = JsonObj["272ac237_dc218e"];  // 二调地类图斑数据路径
-        Fdata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["operator"] = JsonObj["operator"]; // 叠加分析运算类型
-        Fdata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["sourceFields"] = JsonObj["sourceFields"].split(",");  // 叠加数据集中保留的字段
-        Fdata["processes"]["2e769436_07778c"]["bdt-vec:OverlayAnalyst"]["tolerance"] = JsonObj["tolerance"]; // 容差
-        Fdata["processes"]["2e857934_9b5c06"]["bdt-vec:CalculateArea"]["fieldName"] = JsonObj["fieldName"]; // 面积计算字段
-        Fdata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["stats"] = JsonObj["stats"].split(";");  // 属性统计表达式
-        Fdata["processes"]["42d8ca5a_d83ba4"]["bdt-vec:SummarizeAttributes"]["groupFields"] = JsonObj["groupFields"].split(",");  // 属性统计分组字段
 
-        var DataJson = JSON.stringify(Fdata);
+    $('#Fbit').click(function () {
+        var formData = $('#boxs').serializeArray();
+        var jsonObj = {};
+        for (var i in formData) {
+            jsonObj[formData[i].name] = formData[i].value;
+        }
+        // console.log(jsonObj); // object 表单json
+        // console.log(data); // string
+        Adata["processes"]["20ef9b62-03f6-43b2-904c-141f8d648aa4"]["readasfeaturerdd"]["dataConnInfo"] = jsonObj["20ef9b62-03f6-43b2-904c-141f8d648aa4"]; // 一调地类图斑数据路径
+        Adata["processes"]["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"]["readasfeaturerdd"]["dataConnInfo"] = jsonObj["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"];  // 二调地类图斑数据路径
+
+        Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["overlayanalyst"]
+        ["operator"] = jsonObj["operator"]; // 叠加分析运算类型
+
+        Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["overlayanalyst"]["sourceFields"] = jsonObj["sourceFields"].split(",");  // 叠加数据集中保留的字段
+        Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["overlayanalyst"]["tolerance"] = jsonObj["tolerance"]; // 容差
+        Adata["processes"]["0d786a6a-59a1-42b9-b507-67f5500dfcc7"]["calculatearea"]["fieldName"] = jsonObj["fieldName"]; // 面积计算字段
+        Adata["processes"]["1a58d3cd-ac14-453f-8302-7f65f1eb1c5e"]["calculatefield"]["expression"] = jsonObj["expression"]; // 变化检测计算表达式
+        Adata["processes"]["36a48921-4298-409f-81df-c83c9c7ce98e"]["summarizeattributes"]["stats"] = jsonObj["stats"].split(";");  // 属性统计表达式
+        Adata["processes"]["36a48921-4298-409f-81df-c83c9c7ce98e"]["summarizeattributes"]["groupFields"] = jsonObj["groupFields"].split(",");  // 属性统计分组字段
+
+        Adata["processes"]["8d0a7851-8fa7-42f0-beda-6af47c36c207"]["saveas"]["dataConnInfo"] = jsonObj["saveas"];  // 叠加结果保存路径
+
+        // Adata["processes"]["b22a2f56_523b7"]["outputDatasetName"]= jsonObj["outputDatasetName"]; // 叠加结果数据集名
+
+        var dataJson = JSON.stringify(Adata);
         // console.log(dataJson);
-        onSubmit(DataJson)
-    });   
-    
-    function onSubmit(DataJson) {
+        // console.log(typeof(dataJson));
+        onSubmit(dataJson)
+    });
+    function onSubmit(dataJson) {
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8097/geoprocessing/multiprocess',
-            data: DataJson,
+            data: dataJson,
             contentType: 'application/json',
-            success: function (Fdata) {
-                 var array = JSON.parse(Fdata);
-                 console.log(array);
+            success: function (Adata) {
+                // console.log(Adata); // string
                 
-                // console.log(array);
+                var array = JSON.parse(Adata);
+                console.log(array); // object
+                delete array.multiresult; // 删除 multiresult：true
+                var arr = array.b75c4152_cc303;
+                
+                var arrSum = JSON.parse(arr);
+                // console.log(arrSum);
+
                 var tableContent = '';
-
-                for(var j = 0; j < array.length; j++) {
-                    // console.log(array[j]);
-
-                    var data = array[j];
-                    // console.log(array[j].properties);
-                    
+                for(var j = 0; j < arrSum.length; j++) {
+                    var data = arrSum[j];
+                    // console.log(data);
+                        
                     tableContent += '<tr style="height: 40px;">'
                         for( var key in data.properties) {
                             var td = '<td>'+ key +'</td>' + '<td class="td">'+ data.properties[key] +'</td>'
@@ -459,67 +323,89 @@
                 } 
 
                 // 分页
-                var span = '<ul class="pages">' + '<li class="next">' + '下一页' + '</li>' + '<li class="prev">' + '上一页' + '</li>' + '<li class="total">' + '总页数' + '</li>' + '</div>'    
+                var span ='</div>' + '<ul class="pages">' + '<li class="next">' + '下一页' + '</li>' + '<li class="prev">' + '上一页' + '</li>' + '<li class="total">' + '总页数' + '</li>' + '</div>'    
                     // + '<li class="cur_page">' + '当前页数' + '</li>' 
-                
+
                 var pageParam = {
                     next: '.next', //下一页
                     prev: '.prev', //上一页
                     totalEl: '.total', //总页数jq元素  
                     curPageEl: '.cur_page', //当前页数jq元素 
                     perPageCount: 4, //每页显示数量，
-                    totalPage: array.length // 总的td数量
-                    }
-                    // console.log(array.length);
-                    
+                    totalPage: arrSum.length // 总的td数量
+                }
+                    // console.log(arrSum.length);        
                 tableContent = tableContent + span; 
-                
                 document.getElementById('table').innerHTML = tableContent;
-                
                 //包裹列表的容器
                 $('#table tbody').page(pageParam);
+
+                
+                // var map, url = "http://localhost:8090/iserver/services/map-temp-799822660/rest/maps/temp-799822660";
+                    
+
+                for (let n in array) {
+                    // console.log(array[n]);
+                    if(n == "63f307ac-afed-4720-bbfd-423ac68a0ff9")
+                    {
+                        var path = JSON.parse(array[n]);
+                    console.log(path);
+                    var end = path[path.length-1]
+                    console.log(end);
+
+                    var map,url = end.serviceAddress + "/maps/temp-799822660";
+                    console.log(end.serviceAddress);
+                    console.log(url);
+
+                    var extent = [38484026.53, 4411156.34, 38497031.32, 4422701.44 ];
+                    var projection = new ol.proj.Projection({
+                        code:'',
+                        extent: extent,
+                        units: 'm',
+                        getPointResolution:function(resolution, point){
+                            return resolution
+                        }
+                    });
+
+                    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+                        var mapJSONObj = serviceResult.result;
+                        console.log(mapJSONObj);
+                        x = mapJSONObj.center.x;
+                        y = mapJSONObj.center.y;
+                        epsgCode = mapJSONObj.prjCoordSys.epsgCode
+                        console.log(x,y,epsgCode);
+    
+                        var map = new ol.Map({
+                            target: 'map',
+                            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                                .extend([new ol.supermap.control.Logo()]),
+                            view: new ol.View({
+                                center: [38490528.93 , 4416928.89],
+                                zoom: 1,
+                                projection: projection,
+                                origin: [48.4, -55.58],
+                                multiWorld: true
+                            })
+                        });
+                        var layer = new ol.layer.Tile({
+                            source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
+                        });
+                        map.addLayer(layer);
+                        map.addControl(new ol.supermap.control.ScaleLine());
+                    });
+
+                    } 
+                }    
             },
             error: function (jqXHR) {
                 console.log(jqXHR);
             }
         });
+    }   
    
-    }
-               
-            
-    
 </script>
 
 
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-<script>
-    var serverHost = "http://192.168.17.42:8099";
-    var mapUrl =
-        serverHost +
-        "/iserver/services/map-catalog/rest/maps/DEM30_4326",
-        dataUrl = serverHost + "/iserver/services/data-catalog/rest/data/",
-        imageUrl =
-            serverHost +
-            "/iserver/services/map-catalog/rest/maps/DEM30_4326",
-        demUrl =
-            serverHost +
-            "/iserver/services/map-catalog/rest/maps/DEM30_4326";
-
-    var requestUrl =
-        dataUrl + "datasources/catalog/datasets/DEM30_4326";
-    var colorMapReq = {
-        slope: {},
-        dem: {}
-    };
-    var themeCacheMap = {
-        slope: {},
-        dem: {}
-    };
- 
-
-    
-</script>
 </body>
-
 </html>
