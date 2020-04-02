@@ -37,14 +37,14 @@
             <div class="Fmid-1">
                 <span class="Fmid-1-one">一调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/Public/Nwt/cache/recv/李卓慕/Landuse.udbx --dbType=udbx --dataset=DLTB"
+                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=DLTB"
                        name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
             </div>
 
             <div class="Fmid-1">
                 <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/Public/Nwt/cache/recv/李卓慕/Landuse.udbx --dbType=udbx --dataset=DLTB_ed"
+                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=DLTB_ed"
                        name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
             </div>
 
@@ -101,7 +101,7 @@
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/Public/Nwt/cache/recv/李卓慕/Landuse.udbx --dbType=udbx --dataset=aaa"
+                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=aaa"
                        name="saveas">
             </div>
             <div class="Fmid-1">
@@ -321,7 +321,8 @@
                 $("#list").html(html);
                 //初始化分页
                 $("#pagination").pagination({
-                    pageCount: arrSum.length / 5,
+                    //向上取整
+                    pageCount: Math.ceil(arrSum.length / 5),
                     mode: 'fixed', //分页模式，unfixed：不固定页码数量，fixed：固定页码数量
                     count: 4, //mode为unfixed时显示当前选中页前后页数，mode为fixed显示页码总数
                     //回调
