@@ -13,10 +13,15 @@
     <link rel="stylesheet" href="openlayers/iclient-openlayers.css" type="text/css"/>
     <link rel="stylesheet" href="css/form1.css"/>
     <link rel="stylesheet" href="css/mapul.css"/>
+    <link rel="stylesheet" href="Font-Awesome-3.2.1/css/font-awesome.css">
     <script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol.js"></script>
     <script type="text/javascript" src="openlayers/iclient-openlayers.js"></script>
     <script type="text/javascript" src="./json_parse.js"></script>
     <script type="text/javascript" src="./toJSON.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="InitMap.js"></script>
+    <script src="js/jquery.pagination.js"></script>
 </head>
 
 <body style="background: #1E1E1E">
@@ -111,7 +116,13 @@
             </div>
 
         </div>
-        <input type="button" name="button" value="提交" id="Fbit" class="btn btn-outline-info">
+        <div style="display: block;margin-left: 10px;margin-top: 20px">
+            <span hidden id="loading"><i style="left: 100px" class="icon-spinner icon-spin icon-2x"></i><span
+                    style="font-size: large "> 分析中...</span></span>
+            <span hidden id="success" class="alert alert-success" role="alert">分析成功</span>
+            <span hidden id="false" style="width:500px" class="alert alert-danger" role="alert">分析失败</span>
+            <input type="button" name="button" value="提交" id="Fbit" class="btn btn-outline-info">
+        </div>
     </form>
 
 </div>
@@ -144,10 +155,6 @@
     }
 </script>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script src="InitMap.js"></script>
-<script src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
     init("https://iserver.supermap.io/iserver/services/map-world/rest/maps/World");
     var Adata = {
@@ -290,6 +297,9 @@
         var dataJson = JSON.stringify(Adata);
         // console.log(dataJson);
         // console.log(typeof(dataJson));
+        $("#success").hide();
+        $("#false").hide();
+        $("#loading").show();
         onSubmit(dataJson)
     });
 
@@ -300,60 +310,71 @@
             data: dataJson,
             contentType: 'application/json',
             success: function (Adata) {
+                try {
+                    var array = JSON.parse(Adata);
+                    delete array.multiresult; // 删除 multiresult：true
+                    var arr = array["b75c4152_cc303"];
+                    //属性表
+                    var arrSum = JSON.parse(arr);
 
-                var array = JSON.parse(Adata);
-                delete array.multiresult; // 删除 multiresult：true
-                var arr = array["b75c4152_cc303"];
-                //属性表
-                var arrSum = JSON.parse(arr);
+                    //默认第一页显示前5条
+                    var items = arrSum.length > 5 ? arrSum.slice(0, 5) : arrSum;
+                    var html = "";
+                    items.forEach(item => {
+                        html +=
+                            "<tr>" +
+                            "<th>" + (item.properties.DLMC ? item.properties.DLMC : "") + "</th>" +
+                            "<th>" + (item.properties.DLMC_1 ? item.properties.DLMC_1 : "") + "</th>" +
+                            "<th>" + item.properties.Area + "</th>" +
+                            "</tr>";
+                    });
+                    $("#list").html(html);
+                    //初始化分页
+                    $("#pagination").pagination({
+                        //向上取整
+                        totalData: arrSum.length, //数据总条数
+                        showData: 5, //每页显示的条数
+                        keepShowPN: true, //是否一直显示上一页下一页
+                        mode: 'unfixed', //分页模式，unfixed：不固定页码数量，fixed：固定页码数量
+                        count: 2, //mode为unfixed时显示当前选中页前后页数，mode为fixed显示页码总数
+                        //回调
+                        callback: function (info) {
+                            var index = info.getCurrent() - 1;
+                            var items = arrSum.slice(index * 5, (index + 1) * 5);
+                            var html = "";
+                            items.forEach(item => {
+                                html +=
+                                    "<tr>" +
+                                    "<th>" + (item.properties.DLMC ? item.properties.DLMC : "") + "</th>" +
+                                    "<th>" + (item.properties.DLMC_1 ? item.properties.DLMC_1 : "") + "</th>" +
+                                    "<th>" + item.properties.Area + "</th>" +
+                                    "</tr>";
+                            });
+                            $("#list").html(html);
+                        }
+                    });
+                    $("#propertyTable").show();
 
-                //默认第一页显示前5条
-                var items = arrSum.length > 5 ? arrSum.slice(0, 5) : arrSum;
-                var html = "";
-                items.forEach(item => {
-                    html +=
-                        "<tr>" +
-                        "<th>" + (item.properties.DLMC ? item.properties.DLMC : "") + "</th>" +
-                        "<th>" + (item.properties.DLMC_1 ? item.properties.DLMC_1 : "") + "</th>" +
-                        "<th>" + item.properties.Area + "</th>" +
-                        "</tr>";
-                });
-                $("#list").html(html);
-                //初始化分页
-                $("#pagination").pagination({
-                    //向上取整
-                    pageCount: Math.ceil(arrSum.length / 5),
-                    mode: 'fixed', //分页模式，unfixed：不固定页码数量，fixed：固定页码数量
-                    count: 4, //mode为unfixed时显示当前选中页前后页数，mode为fixed显示页码总数
-                    //回调
-                    callback: function (info) {
-                        var index = info.getCurrent() - 1;
-                        var items = arrSum.slice(index * 5, (index + 1) * 5);
-                        var html = "";
-                        items.forEach(item => {
-                            html +=
-                                "<tr>" +
-                                "<th>" + (item.properties.DLMC ? item.properties.DLMC : "") + "</th>" +
-                                "<th>" + (item.properties.DLMC_1 ? item.properties.DLMC_1 : "") + "</th>" +
-                                "<th>" + item.properties.Area + "</th>" +
-                                "</tr>";
-                        });
-                        $("#list").html(html);
-                    }
-                });
-                $("#propertyTable").show();
+                    var path = JSON.parse(array["63f307ac-afed-4720-bbfd-423ac68a0ff9"]);
+                    console.log(path);
+                    var end = path[path.length - 1];
+                    console.log(end);
+                    var temp = end.serviceAddress.split("/");
+                    var mapname = temp[temp.length - 2].replace("map-", "");
+                    var url = end.serviceAddress + "/maps/" + mapname;
+                    init(url);
 
-                var path = JSON.parse(array["63f307ac-afed-4720-bbfd-423ac68a0ff9"]);
-                console.log(path);
-                var end = path[path.length - 1];
-                console.log(end);
-                var temp = end.serviceAddress.split("/");
-                var mapname = temp[temp.length - 2].replace("map-", "");
-                var url = end.serviceAddress + "/maps/" + mapname;
-                init(url);
+                    $("#loading").hide();
+                    $("#success").show();
+                } catch (e) {
+                    $("#loading").hide();
+                    $("#false").show();
+                }
+
             },
             error: function (jqXHR) {
-                console.log(jqXHR);
+                $("#loading").hide();
+                $("#false").show();
             }
         });
     }
