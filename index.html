@@ -101,11 +101,11 @@
 
         <div class="mid-1">
           <span class="mid-1-one">结果保存路径</span>
-          <input type="text" name="uri">
+          <input type="text" name="server">
         </div>
         <div class="mid-1">
           <span class="mid-1-one">结果数据集名</span>
-          <input type="text" name="layerName">
+          <input type="text" name="outputDatasetName">
         </div>
       </div>
       <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
@@ -202,87 +202,91 @@
         "c551c8c8-e430-42a2-b1e0-5d9fc03932f4": {
             "mathanalystadd":{}
         },
-        "b1e8f8c8-37a5-447b-8cd0-57543f92d2a5": {
-            "writecatalog": {
-                "uri":"file:///E:/Jin/work/res/catalog",
-                "layerName":"dem30test",
-                "epsgCode":"4326",
-                "isCOG":"false"
-            }
+        "38473b4_e7279c4": {
+          "rastersaveassdx": {
+            "server":"E:\\Jin\\work\\idesktop\\ terrainsuitability.udbx",
+            "engineType":"UDBX",
+            "alias":"dfc",
+            "outputDatasetName":"dffg",
+            "blockingWrite":"true",
+            "startHeight":"0.0",
+            "endHeight":"0.0",
+            "datasetType":"Grid"
+          }
         }
-    },
+      },
     "connect": [
-                    {
-                        "from":"c551c8c8-e430-42a2-b1e0-5d9fc03932f4|RasterRDD",
-                        "to":"b1e8f8c8-37a5-447b-8cd0-57543f92d2a5|rasterRDD"
-                    },
-                    { 
-                        "from":"54396dd9-2d9a-486c-ab99-fe4b397e9bf8|RasterRDD",
-                        "to":"78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|rasterRDD"
-                    },
-                    {
-                        "from":"ea036971-024a-4de6-84bc-7c3d32ea19ff|RasterRDD",
-                        "to":"ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|rasterRDD"
-                    },
-                    {
-                        "from":"f1e1b405-0bad-4116-b05b-2db551ba8205|RasterRDD",
-                        "to":"78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|otherRasterRDD"
-                    },
-                    {
-                        "from":"22afb752-01bb-461e-bd5d-2d975dafcdf4|RasterRDD",
-                        "to":"d016c886-409e-4e1c-bbeb-285fdc740878|rasterRDD"
-                    },
-                    {
-                        "from":"17f9bea7-9fc6-46e8-9024-576b3c613dd5|RasterRDD",
-                        "to":"d016c886-409e-4e1c-bbeb-285fdc740878|otherRasterRDD"
-                    },
-                    {
-                        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                        "to":"33570a2c-d79c-45d8-9182-08dc6110a8bc|rasterRDD"
-                    },
-                    {
-                        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                        "to":"17f9bea7-9fc6-46e8-9024-576b3c613dd5|rasterRDD"
-                    },
-                    {
-                        "from":"52d16072-38c7-4945-b944-f88e2c4dc8bc|RasterRDD",
-                        "to":"ea036971-024a-4de6-84bc-7c3d32ea19ff|rasterRDD"
-                    },
-                    {
-                        "from":"d016c886-409e-4e1c-bbeb-285fdc740878|RasterRDD",
-                        "to":"ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|otherRasterRDD"
-                    },
-                    {
-                        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                        "to":"52d16072-38c7-4945-b944-f88e2c4dc8bc|rasterRDD"
-                    },
-                    {
-                        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                        "to":"22afb752-01bb-461e-bd5d-2d975dafcdf4|rasterRDD"
-                    },
-                    {
-                        "from":"78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|RasterRDD",
-                        "to":"c551c8c8-e430-42a2-b1e0-5d9fc03932f4|rasterRDD"
-                    },
-                    {
-                        "from":"ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|RasterRDD",
-                        "to":"c551c8c8-e430-42a2-b1e0-5d9fc03932f4|otherRasterRDD"
-                    },
-                    {
-                        "from":"33570a2c-d79c-45d8-9182-08dc6110a8bc|RasterRDD",
-                        "to":"f1e1b405-0bad-4116-b05b-2db551ba8205|rasterRDD"
-                    },
-                    {"from":"33570a2c-d79c-45d8-9182-08dc6110a8bc|RasterRDD",
-                        "to":"54396dd9-2d9a-486c-ab99-fe4b397e9bf8|rasterRDD"
-                    }
-                ],
-            "env": {
-                "master":"",
-                "appName":"",
-                "settings":""
-            },
-            "ui":{}
-
+      {
+        "from":"54396dd9-2d9a-486c-ab99-fe4b397e9bf8|RasterRDD",
+        "to":"78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|rasterRDD"
+      },
+      {
+        "from":"ea036971-024a-4de6-84bc-7c3d32ea19ff|RasterRDD",
+        "to":"ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|rasterRDD"
+      },
+      {
+        "from":"f1e1b405-0bad-4116-b05b-2db551ba8205|RasterRDD",
+        "to":"78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|otherRasterRDD"
+      },
+      {
+        "from":"22afb752-01bb-461e-bd5d-2d975dafcdf4|RasterRDD",
+        "to":"d016c886-409e-4e1c-bbeb-285fdc740878|rasterRDD"
+      },
+      {
+        "from":"17f9bea7-9fc6-46e8-9024-576b3c613dd5|RasterRDD",
+        "to":"d016c886-409e-4e1c-bbeb-285fdc740878|otherRasterRDD"
+      },
+      {
+        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
+        "to":"17f9bea7-9fc6-46e8-9024-576b3c613dd5|rasterRDD"
+      },
+      {
+        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
+        "to":"33570a2c-d79c-45d8-9182-08dc6110a8bc|rasterRDD"
+      },
+      {
+        "from":"52d16072-38c7-4945-b944-f88e2c4dc8bc|RasterRDD",
+        "to":"ea036971-024a-4de6-84bc-7c3d32ea19ff|rasterRDD"
+      },
+      {
+        "from":"d016c886-409e-4e1c-bbeb-285fdc740878|RasterRDD",
+        "to":"ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|otherRasterRDD"
+      },
+      {
+        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
+        "to":"52d16072-38c7-4945-b944-f88e2c4dc8bc|rasterRDD"
+      },
+      {
+        "from":"e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
+        "to":"22afb752-01bb-461e-bd5d-2d975dafcdf4|rasterRDD"
+      },
+      {
+        "from":"78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|RasterRDD",
+        "to":"c551c8c8-e430-42a2-b1e0-5d9fc03932f4|rasterRDD"
+      },
+      {
+        "from":"ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|RasterRDD",
+        "to":"c551c8c8-e430-42a2-b1e0-5d9fc03932f4|otherRasterRDD"
+      },
+      {
+        "from":"33570a2c-d79c-45d8-9182-08dc6110a8bc|RasterRDD",
+        "to":"f1e1b405-0bad-4116-b05b-2db551ba8205|rasterRDD"
+      },
+      {
+        "from":"33570a2c-d79c-45d8-9182-08dc6110a8bc|RasterRDD",
+        "to":"54396dd9-2d9a-486c-ab99-fe4b397e9bf8|rasterRDD"
+      },
+      {
+        "from":"c551c8c8-e430-42a2-b1e0-5d9fc03932f4|RasterRDD",
+        "to":"38473b4_e7279c4|rasterRDD"
+      }
+    ],
+      "env": {
+        "master":"",
+        "appName":"",
+        "settings":""
+      },
+      "ui":{}
     }
     // 序列化表单
     $('#bit').click(function () {
@@ -314,8 +318,8 @@
       Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
       Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
 
-      Adata["processes"]["b1e8f8c8-37a5-447b-8cd0-57543f92d2a5"]["writecatalog"]["uri"] = jsonObj["uri"];
-      Adata["processes"]["b1e8f8c8-37a5-447b-8cd0-57543f92d2a5"]["writecatalog"]["layerName"] = jsonObj["layerName"];
+      Adata["processes"]["38473b4_e7279c4"]["rastersaveassdx"]["server"] = jsonObj["server"];
+      Adata["processes"]["38473b4_e7279c4"]["rastersaveassdx"]["outputDatasetName"] = jsonObj["outputDatasetName"];
 
       var dataJson = JSON.stringify(Adata);
       console.log(dataJson);
