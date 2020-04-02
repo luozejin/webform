@@ -6,18 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>土地利用变化检测</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/pagination.css"/>
     <link href="libs/dist/openlayers/4.6.5/ol.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="openlayers/iclient-openlayers.css" type="text/css"/>
     <link rel="stylesheet" href="css/form1.css"/>
     <link rel="stylesheet" href="css/mapul.css"/>
     <script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol.js"></script>
-    <script type="text/javascript" src="libs/dist/openlayers/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="openlayers/iclient-openlayers.js"></script>
     <script type="text/javascript" src="./json_parse.js"></script>
     <script type="text/javascript" src="./toJSON.js"></script>
-    <script type="text/javascript" src="./colorramps.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
 </head>
 
 <body style="background: #1E1E1E">
@@ -37,12 +36,16 @@
         <div class="Fmid">
             <div class="Fmid-1">
                 <span class="Fmid-1-one">一调地类图斑数据路径<span class="defaltvalue">*</span></span>
-                <input type="text" name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
+                <input type="text"
+                       value="sdx --server=C:/Users/Public/Nwt/cache/recv/李卓慕/Landuse.udbx --dbType=udbx --dataset=DLTB"
+                       name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
             </div>
 
             <div class="Fmid-1">
                 <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
-                <input type="text" name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
+                <input type="text"
+                       value="sdx --server=C:/Users/Public/Nwt/cache/recv/李卓慕/Landuse.udbx --dbType=udbx --dataset=DLTB_ed"
+                       name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
             </div>
 
             <div class="Fmid-1">
@@ -75,14 +78,14 @@
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">变化检测计算表达式<span class="defaltvalue">*</span></span>
-                <input type="text" name="expression" value="abs(TNMJ-TBMJ_1)/BTMJ"
-                    onfocus="if (value =='abs(TNMJ-TBMJ_1)/BTMJ'){value =''}"
-                    onblur="if (value ==''){value='abs(TNMJ-TBMJ_1)/BTMJ'}">
+                <input type="text" name="expression" value="abs(TBMJ - TBMJ_1) / TBMJ"
+                       onfocus="if (value =='abs(TBMJ - TBMJ_1) / TBMJ'){value =''}"
+                       onblur="if (value ==''){value='abs(TBMJ - TBMJ_1) / TBMJ'}">
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">变化检测结果字段<span class="defaltvalue">*</span></span>
                 <input type="text" name="变化检测结果字段" value="difference"
-                    onfocus="if (value =='difference'){value =''}" onblur="if (value ==''){value='difference'}">
+                       onfocus="if (value =='difference'){value =''}" onblur="if (value ==''){value='difference'}">
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">属性统计表达式</span>
@@ -97,33 +100,35 @@
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
-                <input type="text" name="saveas">
+                <input type="text"
+                       value="sdx --server=C:/Users/Public/Nwt/cache/recv/李卓慕/Landuse.udbx --dbType=udbx --dataset=aaa"
+                       name="saveas">
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果数据集名<span class="defaltvalue">*</span></span>
                 <input type="text" name="outputDatasetName" value="DLTB_Union"
-                    onfocus="if (value =='DLTB_Union'){value =''}" onblur="if (value ==''){value='DLTB_Union'}">
+                       onfocus="if (value =='DLTB_Union'){value =''}" onblur="if (value ==''){value='DLTB_Union'}">
             </div>
 
         </div>
         <input type="button" name="button" value="提交" id="Fbit" class="btn btn-outline-info">
     </form>
 
-    <!-- 属性表 -->
-    <div class="attributeTable">
-        <table id="table">
+</div>
+<div id="propertyTable" hidden style="text-align:center;left: 0px;bottom: 20px;position: absolute;width: 22%">
+    <table style="display: inline-block;width: auto" class="table table-condensed table-bordered">
+        <thead>
+        <tr>
+            <th>一调地类名称</th>
+            <th>二调地类名称</th>
+            <th>面积</th>
+        </tr>
+        </thead>
+        <tbody id="list">
+        </tbody>
+    </table>
 
-            <!-- 分页  -->
-            <!-- <ul>
-                <li class="next"></li>
-                <li class="prev"></li>
-                <li class="total"></li>
-                <li class="cur_page"></li>
-            </ul> -->
-       </table>
-    </div>
-    
-
+    <div id="pagination" class="m-style"></div>
 </div>
 <script>
     var Box = document.getElementById('boxs');
@@ -140,20 +145,21 @@
 </script>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="js/page.js"></script>
-
-
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script src="InitMap.js"></script>
+<script src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
+    init("http://localhost:8090/iserver/services/map-USA/rest/maps/Precipitation");
     var Adata = {
         "processes": {
             "f2fccedf-7f51-4641-9a57-9aa4cd5e7058": {
                 "readasfeaturerdd": {
-                    "dataConnInfo":"sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
+                    "dataConnInfo": "sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
                 }
             },
             "20ef9b62-03f6-43b2-904c-141f8d648aa4": {
                 "readasfeaturerdd": {
-                    "dataConnInfo":"sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB"
+                    "dataConnInfo": "sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB"
                 }
             },
             "92693d20-db9d-42cc-8747-369db3605464": {
@@ -162,27 +168,27 @@
                         "TBMJ",
                         "DLMC"
                     ],
-                "overlayFields": [
-                    "TBMJ",
-                    "DLMC"
-                ],
-                "operator":"Intersect",
-                "tolerance":"0.0",
-                "isIniProcess":"true",
-                "isReturnSingleGeometry":"true"
+                    "overlayFields": [
+                        "TBMJ",
+                        "DLMC"
+                    ],
+                    "operator": "Intersect",
+                    "tolerance": "0.0",
+                    "isIniProcess": "true",
+                    "isReturnSingleGeometry": "true"
                 }
             },
             "0d786a6a-59a1-42b9-b507-67f5500dfcc7": {
                 "calculatearea": {
-                    "fieldName":"Area",
-                    "isPreciseArea":"false"
+                    "fieldName": "Area",
+                    "isPreciseArea": "false"
                 }
             },
             "1a58d3cd-ac14-453f-8302-7f65f1eb1c5e": {
-                "calculatefield": { 
-                    "fieldName":"rate",
-                    "fieldType":"double",
-                    "expression":"abs(TBMJ - TBMJ_1) / TBMJ"
+                "calculatefield": {
+                    "fieldName": "rate",
+                    "fieldType": "double",
+                    "expression": "abs(TBMJ - TBMJ_1) / TBMJ"
                 }
             },
             "36a48921-4298-409f-81df-c83c9c7ce98e": {
@@ -198,67 +204,64 @@
             },
             "8d0a7851-8fa7-42f0-beda-6af47c36c207": {
                 "saveas": {
-                    "dataConnInfo":"sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
+                    "dataConnInfo": "sdx --server=E:\\\\Jin\\\\work\\\\2020.03.05\\\\ChangeDetection_sample1\\\\Landuse.udbx --dbType=UDBX --dataset=DLTB_ed"
                 }
             },
             "63f307ac-afed-4720-bbfd-423ac68a0ff9": {
                 "publishmap": {
-                    "server":"http://localhost:8090",
-                    "user":"luozejin",
-                    "password":"a.201997",
-                    "isEditable":"false"
+                    "server": "http://localhost:8090",
+                    "user": "admin",
+                    "password": "iServer1",
+                    "isEditable": "false"
                 }
             },
             "b75c4152_cc303": {
                 "printfeaturerddtojson": {
-                    "num":"-1"
+                    "num": "-1"
                 }
             }
         },
         "connect": [
             {
-                "from":"1a58d3cd-ac14-453f-8302-7f65f1eb1c5e|featureRDD",
-                "to":"8d0a7851-8fa7-42f0-beda-6af47c36c207|featureRdd"
+                "from": "1a58d3cd-ac14-453f-8302-7f65f1eb1c5e|featureRDD",
+                "to": "8d0a7851-8fa7-42f0-beda-6af47c36c207|featureRdd"
             },
             {
-                "from":"8d0a7851-8fa7-42f0-beda-6af47c36c207|isSuccessful",
-                "to":"63f307ac-afed-4720-bbfd-423ac68a0ff9|dataConnection"
+                "from": "8d0a7851-8fa7-42f0-beda-6af47c36c207|isSuccessful",
+                "to": "63f307ac-afed-4720-bbfd-423ac68a0ff9|dataConnection"
             },
             {
-                "from":"f2fccedf-7f51-4641-9a57-9aa4cd5e7058|featureRDD",
-                "to":"92693d20-db9d-42cc-8747-369db3605464|overlayRDD"
+                "from": "f2fccedf-7f51-4641-9a57-9aa4cd5e7058|featureRDD",
+                "to": "92693d20-db9d-42cc-8747-369db3605464|overlayRDD"
             },
             {
-                "from":"0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD",
-                "to":"36a48921-4298-409f-81df-c83c9c7ce98e|summarizedRDD"
+                "from": "0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD",
+                "to": "36a48921-4298-409f-81df-c83c9c7ce98e|summarizedRDD"
             },
             {
-                "from":"0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD",
-                "to":"1a58d3cd-ac14-453f-8302-7f65f1eb1c5e|featureRDD"
+                "from": "0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD",
+                "to": "1a58d3cd-ac14-453f-8302-7f65f1eb1c5e|featureRDD"
             },
             {
-                "from":"20ef9b62-03f6-43b2-904c-141f8d648aa4|featureRDD",
-                "to":"92693d20-db9d-42cc-8747-369db3605464|sourceRDD"
+                "from": "20ef9b62-03f6-43b2-904c-141f8d648aa4|featureRDD",
+                "to": "92693d20-db9d-42cc-8747-369db3605464|sourceRDD"
             },
             {
-                "from":"92693d20-db9d-42cc-8747-369db3605464|featureRDD",
-                "to":"0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD"
+                "from": "92693d20-db9d-42cc-8747-369db3605464|featureRDD",
+                "to": "0d786a6a-59a1-42b9-b507-67f5500dfcc7|featureRDD"
             },
             {
-                "from":"36a48921-4298-409f-81df-c83c9c7ce98e|featureRDD",
-                "to":"b75c4152_cc303|featureRDD"
+                "from": "36a48921-4298-409f-81df-c83c9c7ce98e|featureRDD",
+                "to": "b75c4152_cc303|featureRDD"
             }
         ],
         "env": {
-            "master":"",
-            "appName":"",
-            "settings":""
+            "master": "",
+            "appName": "",
+            "settings": ""
         },
-        "ui":{}
+        "ui": {}
     };
-
-   
-
     $('#Fbit').click(function () {
         var formData = $('#boxs').serializeArray();
         var jsonObj = {};
@@ -271,7 +274,7 @@
         Adata["processes"]["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"]["readasfeaturerdd"]["dataConnInfo"] = jsonObj["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"];  // 二调地类图斑数据路径
 
         Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["overlayanalyst"]
-        ["operator"] = jsonObj["operator"]; // 叠加分析运算类型
+            ["operator"] = jsonObj["operator"]; // 叠加分析运算类型
 
         Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["overlayanalyst"]["sourceFields"] = jsonObj["sourceFields"].split(",");  // 叠加数据集中保留的字段
         Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["overlayanalyst"]["tolerance"] = jsonObj["tolerance"]; // 容差
@@ -289,6 +292,7 @@
         // console.log(typeof(dataJson));
         onSubmit(dataJson)
     });
+
     function onSubmit(dataJson) {
         $.ajax({
             type: 'POST',
@@ -296,113 +300,64 @@
             data: dataJson,
             contentType: 'application/json',
             success: function (Adata) {
-                // console.log(Adata); // string
-                
+
                 var array = JSON.parse(Adata);
-                console.log(array); // object
                 delete array.multiresult; // 删除 multiresult：true
-                var arr = array.b75c4152_cc303;
-                
+                var arr = array["b75c4152_cc303"];
+                //属性表
                 var arrSum = JSON.parse(arr);
-                // console.log(arrSum);
 
-                var tableContent = '';
-                for(var j = 0; j < arrSum.length; j++) {
-                    var data = arrSum[j];
-                    // console.log(data);
-                        
-                    tableContent += '<tr style="height: 40px;">'
-                        for( var key in data.properties) {
-                            var td = '<td>'+ key +'</td>' + '<td class="td">'+ data.properties[key] +'</td>'
-                            tableContent += td;
-                        }            
-                    tableContent += '</tr>';
-                } 
-
-                // 分页
-                var span ='</div>' + '<ul class="pages">' + '<li class="next">' + '下一页' + '</li>' + '<li class="prev">' + '上一页' + '</li>' + '<li class="total">' + '总页数' + '</li>' + '</div>'    
-                    // + '<li class="cur_page">' + '当前页数' + '</li>' 
-
-                var pageParam = {
-                    next: '.next', //下一页
-                    prev: '.prev', //上一页
-                    totalEl: '.total', //总页数jq元素  
-                    curPageEl: '.cur_page', //当前页数jq元素 
-                    perPageCount: 4, //每页显示数量，
-                    totalPage: arrSum.length // 总的td数量
-                }
-                    // console.log(arrSum.length);        
-                tableContent = tableContent + span; 
-                document.getElementById('table').innerHTML = tableContent;
-                //包裹列表的容器
-                $('#table tbody').page(pageParam);
-
-                
-                // var map, url = "http://localhost:8090/iserver/services/map-temp-799822660/rest/maps/temp-799822660";
-                    
-
-                for (let n in array) {
-                    // console.log(array[n]);
-                    if(n == "63f307ac-afed-4720-bbfd-423ac68a0ff9")
-                    {
-                        var path = JSON.parse(array[n]);
-                    console.log(path);
-                    var end = path[path.length-1]
-                    console.log(end);
-
-                    var map,url = end.serviceAddress + "/maps/temp-799822660";
-                    console.log(end.serviceAddress);
-                    console.log(url);
-
-                    var extent = [38484026.53, 4411156.34, 38497031.32, 4422701.44 ];
-                    var projection = new ol.proj.Projection({
-                        code:'',
-                        extent: extent,
-                        units: 'm',
-                        getPointResolution:function(resolution, point){
-                            return resolution
-                        }
-                    });
-
-                    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
-                        var mapJSONObj = serviceResult.result;
-                        console.log(mapJSONObj);
-                        x = mapJSONObj.center.x;
-                        y = mapJSONObj.center.y;
-                        epsgCode = mapJSONObj.prjCoordSys.epsgCode
-                        console.log(x,y,epsgCode);
-    
-                        var map = new ol.Map({
-                            target: 'map',
-                            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                                .extend([new ol.supermap.control.Logo()]),
-                            view: new ol.View({
-                                center: [38490528.93 , 4416928.89],
-                                zoom: 1,
-                                projection: projection,
-                                origin: [48.4, -55.58],
-                                multiWorld: true
-                            })
+                //默认第一页显示前5条
+                var items = arrSum.length > 5 ? arrSum.slice(0, 5) : arrSum;
+                var html = "";
+                items.forEach(item => {
+                    html +=
+                        "<tr>" +
+                        "<th>" + (item.properties.DLMC ? item.properties.DLMC : "") + "</th>" +
+                        "<th>" + (item.properties.DLMC_1 ? item.properties.DLMC_1 : "") + "</th>" +
+                        "<th>" + item.properties.Area + "</th>" +
+                        "</tr>";
+                });
+                $("#list").html(html);
+                //初始化分页
+                $("#pagination").pagination({
+                    pageCount: arrSum.length / 5,
+                    mode: 'fixed', //分页模式，unfixed：不固定页码数量，fixed：固定页码数量
+                    count: 4, //mode为unfixed时显示当前选中页前后页数，mode为fixed显示页码总数
+                    //回调
+                    callback: function (info) {
+                        var index = info.getCurrent() - 1;
+                        var items = arrSum.slice(index * 5, (index + 1) * 5);
+                        var html = "";
+                        items.forEach(item => {
+                            html +=
+                                "<tr>" +
+                                "<th>" + (item.properties.DLMC ? item.properties.DLMC : "") + "</th>" +
+                                "<th>" + (item.properties.DLMC_1 ? item.properties.DLMC_1 : "") + "</th>" +
+                                "<th>" + item.properties.Area + "</th>" +
+                                "</tr>";
                         });
-                        var layer = new ol.layer.Tile({
-                            source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
-                        });
-                        map.addLayer(layer);
-                        map.addControl(new ol.supermap.control.ScaleLine());
-                    });
+                        $("#list").html(html);
+                    }
+                });
+                $("#propertyTable").show();
 
-                    } 
-                }    
+                var path = JSON.parse(array["63f307ac-afed-4720-bbfd-423ac68a0ff9"]);
+                console.log(path);
+                var end = path[path.length - 1];
+                console.log(end);
+                var temp = end.serviceAddress.split("/");
+                var mapname = temp[temp.length - 2].replace("map-", "");
+                var url = end.serviceAddress + "/maps/" + mapname;
+                init(url);
             },
             error: function (jqXHR) {
                 console.log(jqXHR);
             }
         });
-    }   
-   
+    }
+
 </script>
 
-
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
 </body>
 </html>
