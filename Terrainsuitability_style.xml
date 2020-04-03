@@ -1,0 +1,60 @@
+<sml:Theme>
+    <sml:Type>12</sml:Type>
+    <sml:Caption/>
+    <sml:Visible>TRUE</sml:Visible>
+    <sml:MinVisibleScale>0.00000000000000000000e+000</sml:MinVisibleScale>
+    <sml:MaxVisibleScale>0.00000000000000000000e+000</sml:MaxVisibleScale>
+    <sml:ExtendExpressions/>
+    <sml:IsUseRepresentation>FALSE</sml:IsUseRepresentation>
+    <sml:RepresentationFieldName/>
+    <sml:ThemRepreFieldName/>
+    <sml:NoDataStyle>-1</sml:NoDataStyle>
+    <sml:RangeItems sml:Descending="FALSE">
+        <sml:RangeItem>
+            <sml:Caption>-340282349999999990000000000000000000000.0000000000000000</sml:Caption>
+            <sml:Value>X&lt;-340282349999999990000000000000000000000</sml:Value>
+            <sml:Style>RGB(0,255,130816)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+        <sml:RangeItem>
+            <sml:Caption>Min &lt;= X &lt; 1.319508</sml:Caption>
+            <sml:Value>-340282349999999990000000000000000000000&lt;=X&lt;1.319507910772894</sml:Value>
+            <sml:Style>RGB(176,241,131045)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+        <sml:RangeItem>
+            <sml:Caption>1.319508 &lt;= X &lt; 1.741101</sml:Caption>
+            <sml:Value>1.319507910772894&lt;=X&lt;1.741101126592248</sml:Value>
+            <sml:Style>RGB(122,201,130904)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+        <sml:RangeItem>
+            <sml:Caption>1.741101 &lt;= X &lt; 2.297397</sml:Caption>
+            <sml:Value>1.741101126592248&lt;=X&lt;2.29739670999407</sml:Value>
+            <sml:Style>RGB(176,181,130850)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+        <sml:RangeItem>
+            <sml:Caption>2.297397 &lt;= X &lt; 3.031433</sml:Caption>
+            <sml:Value>2.29739670999407&lt;=X&lt;3.031433133020796</sml:Value>
+            <sml:Style>RGB(131,19,130816)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+        <sml:RangeItem>
+            <sml:Caption>3.031433 &lt;= X &lt; Max</sml:Caption>
+            <sml:Value>3.031433133020796&lt;=X&lt;340282349999999990000000000000000000000</sml:Value>
+            <sml:Style>RGB(255,255,131071)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+        <sml:RangeItem>
+            <sml:Caption>340282349999999990000000000000000000000</sml:Caption>
+            <sml:Value>X&gt;=340282349999999990000000000000000000000</sml:Value>
+            <sml:Style>RGB(255,0,130816)</sml:Style>
+            <sml:StyleEnable>TRUE</sml:StyleEnable>
+        </sml:RangeItem>
+    </sml:RangeItems>
+    <sml:RangeMethod>3</sml:RangeMethod>
+    <sml:SpecialValueTransparent>FALSE</sml:SpecialValueTransparent>
+    <sml:SpecialValue>-9999.000000</sml:SpecialValue>
+    <sml:GradientType>17</sml:GradientType>
+</sml:Theme>
