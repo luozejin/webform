@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="css/mapul.css"/>
     <link rel="stylesheet" href="css/form.css"/>
+    <link rel="stylesheet" href="Font-Awesome-3.2.1/css/font-awesome.css">
 </head>
 
 <body style="background: #1E1E1E">
@@ -107,7 +108,13 @@
                 <input type="text" name="outputDatasetName" id="outputDatasetName">
             </div>
         </div>
-        <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
+        <div style="display: block;margin-left: 10px;margin-top: 20px">
+            <span hidden id="loading"><i style="left: 100px" class="icon-spinner icon-spin icon-2x"></i><span
+                    style="font-size: large "> 分析中...</span></span>
+            <span hidden id="success" class="alert alert-success" role="alert">分析成功</span>
+            <span hidden id="false" style="width:500px" class="alert alert-danger" role="alert">分析失败</span>
+            <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
+        </div>
     </form>
 </div>
 
@@ -323,7 +330,9 @@
 
         var dataJson = JSON.stringify(Adata);
         console.log(dataJson);
-
+        $("#success").hide();
+        $("#false").hide();
+        $("#loading").show();
         onSubmit(dataJson)
     });
 
@@ -362,16 +371,23 @@
                             var temp = serviceAddress.split("/");
                             var mapname = temp[temp.length - 2].replace("map-", "");
                             var url = serviceAddress + "/maps/" + mapname;
+                            $("#success").show();
+                            $("#loading").hide();
                             init(url);
                         },
                         error: function (jqXHR) {
-                            console.log(jqXHR);
+                            $("#false").show();
+                            $("#loading").hide();
                         }
                     });
+                } else {
+                    $("#false").show();
+                    $("#loading").hide();
                 }
             },
             error: function (jqXHR) {
-                console.log(jqXHR);
+                $("#false").show();
+                $("#loading").hide();
             }
         });
     }
