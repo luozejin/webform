@@ -42,14 +42,14 @@
             <div class="Fmid-1">
                 <span class="Fmid-1-one">一调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=DLTB"
+                       value="sdx --server=E:/Jin/work/2020.03.05/ChangeDetection_sample1/Landuse.udbx --dbType=udbx --dataset=DLTB"
                        name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
             </div>
 
             <div class="Fmid-1">
                 <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=DLTB_ed"
+                       value="sdx --server=E:/Jin/work/2020.03.05/ChangeDetection_sample1/Landuse.udbx --dbType= udbx --dataset=DLTB_ed"
                        name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
             </div>
 
@@ -106,7 +106,7 @@
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=aaa"
+                       value="sdx --server= E:/Jin/work/2020.03.05/ChangeDetection_sample1/Landuse.udbx --dbType=udbx --dataset=aaa"
                        name="saveas">
             </div>
             <div class="Fmid-1">
@@ -217,8 +217,8 @@
             "63f307ac-afed-4720-bbfd-423ac68a0ff9": {
                 "publishmap": {
                     "server": "http://localhost:8090",
-                    "user": "admin",
-                    "password": "iServer1",
+                    "user": "luozejin",
+                    "password": "a.201997",
                     "isEditable": "false"
                 }
             },
@@ -295,7 +295,7 @@
         // Adata["processes"]["b22a2f56_523b7"]["outputDatasetName"]= jsonObj["outputDatasetName"]; // 叠加结果数据集名
 
         var dataJson = JSON.stringify(Adata);
-        // console.log(dataJson);
+        console.log(dataJson);
         // console.log(typeof(dataJson));
         $("#success").hide();
         $("#false").hide();
@@ -364,13 +364,25 @@
                     var url = end.serviceAddress + "/maps/" + mapname;
                     init(url);
 
+                    var map, urlWorld = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
+                        map = L.map('map', {
+                            crs: L.CRS.EPSG4326,
+                            center: [40, 118],
+                            maxZoom: 18,
+                            zoom: 6
+                        });
+                        L.supermap.tiledMapLayer(urlWorld).addTo(map);
+                        L.supermap.tiledMapLayer(url, {
+                            transparent: true,
+                            opacity: 0.9,
+                            zoom:8
+                        }).addTo(map);
                     $("#loading").hide();
                     $("#success").show();
                 } catch (e) {
                     $("#loading").hide();
                     $("#false").show();
                 }
-
             },
             error: function (jqXHR) {
                 $("#loading").hide();
@@ -378,7 +390,6 @@
             }
         });
     }
-
 </script>
 
 </body>
