@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="css/mapul.css"/>
     <link rel="stylesheet" href="css/form.css"/>
-    <link rel="stylesheet" href="Font-Awesome-3.2.1/css/font-awesome.css">
 </head>
 
 <body style="background: #1E1E1E">
@@ -31,7 +30,7 @@
         <div class="mid">
             <div class="mid-1" style="margin-top: 20px">
                 <span class="mid-1-one">输入数据路径</span>
-                <input type="text" name="path">
+                <input type="text" name="path" value="E:\Jin\work\idesktop\dem.tif">
             </div>
 
             <div class="mid-1">
@@ -46,7 +45,7 @@
                 <input type="text" name="54396dd9minValue" class="mu" value="3.0"
                        onfocus="if (value =='3.0'){value =''}"
                        onblur="if (value ==''){value='3.0'}">
-                <span style="margin-left: 17px;">——</span>
+                <span style="margin-left: 17px;">—</span>
                 <input type="text" name="54396dd9maxValue" class="mo" value="24.99"
                        onfocus="if (value =='24.99'){value =''}" onblur="if (value ==''){value='24.99'}">
             </div>
@@ -56,7 +55,7 @@
                 <input type="text" name="f1e1b405minValue" class="mu" value="30.0"
                        onfocus="if (value =='30.0'){value =''}"
                        onblur="if (value ==''){value='30.0'}">
-                <span style="margin-left: 17px;">——</span>
+                <span style="margin-left: 17px;">—</span>
                 <input type="text" name="f1e1b405maxValue" class="mo" value="25.0"
                        onfocus="if (value =='25.0'){value =''}"
                        onblur="if (value ==''){value='25.0'}">
@@ -74,7 +73,7 @@
                 <input type="text" name="ea036971minValue" class="mu" value="60.0"
                        onfocus="if (value =='60.0'){value =''}"
                        onblur="if (value ==''){value='60.0'}">
-                <span style="margin-left: 17px;">——</span>
+                <span style="margin-left: 17px;">—</span>
                 <input type="text" name="ea036971maxValue" class="mo" value="200.0"
                        onfocus="if (value =='200.0'){value =''}" onblur="if (value ==''){value='200.0'}">
             </div>
@@ -85,7 +84,7 @@
                 <input type="text" name="22afb752minValue" class="mu" value="5.0"
                        onfocus="if (value =='5.0'){value =''}"
                        onblur="if (value ==''){value='5.0'}">
-                <span style="margin-left: 17px;">——</span>
+                <span style="margin-left: 17px;">—</span>
                 <input type="text" name="22afb752maxValue" class="mo" value="99.99"
                        onfocus="if (value =='99.99'){value =''}" onblur="if (value ==''){value='99.99'}">
             </div>
@@ -94,27 +93,21 @@
                 <span class="mid-1-two">次适宜范围</span>
                 <input type="text" name="17f9bea7minValue" class="mu" value="100.0"
                        onfocus="if (value =='100.0'){value =''}" onblur="if (value ==''){value='100.0'}">
-                <span style="margin-left: 17px;">——</span>
+                <span style="margin-left: 17px;">—</span>
                 <input type="text" name="17f9bea7maxValue" class="mo" value="400.0"
                        onfocus="if (value =='400.0'){value =''}" onblur="if (value ==''){value='400.0'}">
             </div>
 
             <div class="mid-1">
                 <span class="mid-1-one">结果保存路径</span>
-                <input type="text" name="server" id="server">
+                <input type="text" name="server" id="server" value="E:\Jin\work\idesktop\ t1.udbx">
             </div>
             <div class="mid-1">
                 <span class="mid-1-one">结果数据集名</span>
-                <input type="text" name="outputDatasetName" id="outputDatasetName">
+                <input type="text" name="outputDatasetName" id="outputDatasetName" value="udbx">
             </div>
         </div>
-        <div style="display: block;margin-left: 10px;margin-top: 20px">
-            <span hidden id="loading"><i style="left: 100px" class="icon-spinner icon-spin icon-2x"></i><span
-                    style="font-size: large "> 分析中...</span></span>
-            <span hidden id="success" class="alert alert-success" role="alert">分析成功</span>
-            <span hidden id="false" style="width:500px" class="alert alert-danger" role="alert">分析失败</span>
-            <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
-        </div>
+        <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
     </form>
 </div>
 
@@ -134,7 +127,10 @@
 </script>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="ajax.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
+    <link rel="stylesheet" href="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"></script>
 
 <script type="text/javascript">
     var Adata = {
@@ -329,7 +325,7 @@
         Adata["processes"]["38473b4_e7279c4"]["rastersaveassdx"]["alias"] = jsonObj["outputDatasetName"];
 
         var dataJson = JSON.stringify(Adata);
-        console.log(dataJson);
+        // console.log(dataJson);
         $("#success").hide();
         $("#false").hide();
         $("#loading").show();
@@ -351,9 +347,9 @@
                             "a99cb562_6186e8": {
                                 "publishmap": {
                                     "server": "http://localhost:8090",
-                                    "user": "admin",
-                                    "password": "iServer1",
-                                    "styleFile": "C:\\Users\\0.0\\Desktop\\webform\\Terrainsuitability_style.xml",//风格模板位置
+                                    "user": "luozejin",
+                                    "password": "a.201997",
+                                    "styleFile": "E:\\Jin\\work\\webform\\webform\\Terrainsuitability_style.xml",//风格模板位置
                                     "dataConnection": "sdx --server=" + Adata + " --dbType=udbx --dataset=" + $("#outputDatasetName").val() + "_0",
                                     "isEditable": "false"
                                 }
@@ -367,6 +363,7 @@
                         contentType: 'application/json',
                         success: function (result) {
                             //截取地图名
+                            console.log(result);
                             var serviceAddress = JSON.parse(result)[0]["serviceAddress"];
                             var temp = serviceAddress.split("/");
                             var mapname = temp[temp.length - 2].replace("map-", "");
@@ -374,6 +371,22 @@
                             $("#success").show();
                             $("#loading").hide();
                             init(url);
+                           console.log(url);
+                            //  地图叠加  
+                            var map, urlWorld = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
+                            map = L.map('map', {
+                                crs: L.CRS.EPSG4326,
+                                center: [40, 118],
+                                maxZoom: 18,
+                                zoom: 6
+                            });
+
+                            L.supermap.tiledMapLayer(urlWorld).addTo(map);
+                            L.supermap.tiledMapLayer(url, {
+                                transparent: true,
+                                opacity: 0.9,
+                                zoom: 6
+                            }).addTo(map);
                         },
                         error: function (jqXHR) {
                             $("#false").show();
@@ -403,8 +416,9 @@
 <script type="text/javascript" src="./colorramps.js"></script>
 <script type="text/javascript" src="InitMap.js"></script>
 <script>
-    var url = "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
+    var url = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
     init(url);
+    
 </script>
 </body>
 
