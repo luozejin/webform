@@ -1,31 +1,63 @@
 var map, url, options = {};
+var overlayGroup = new ol.layer.Group({
+    title: 'result',
+    layers: []
+});
+var baseGroup = new ol.layer.Group({
+    title: 'base',
+    layers: []
+});
 var layerObj, mapName, projection;
-function init(url) {
+
+function init(url, layername, layerGroup, callback) {
     this.url = url;
-    new ol.supermap.MapService(url)
-        .getMapInfo(function (result) {
-            loadMap(result.result);
+    if (callback) {
+        new ol.supermap.MapService(url).getMapInfo(callback);
+    } else {
+        new ol.supermap.MapService(url).getMapInfo(function (result) {
+            addlayer(result.result, layername, layerGroup);
         });
+    }
 }
 
-function loadMap(result) {
-    var lon = 0, lat = 0;
-    var view;
-    var originResult = result;
-    var visableResolution = [];
-    var attrib = 'Map data &copy; 2013 Lantm?teriet, Imagery &copy; 2013 SuperMap';
+function addresult(url) {
+    options.url = url;
+    options.cacheEnabled = false;
+    let layer = new ol.layer.Tile({
+        title: "result",
+        source: new ol.source.TileSuperMapRest(options)
+    });
+    overlayGroup.getLayers().clear();
+    overlayGroup.getLayers().push(layer);
+}
+
+function addlayer(result, layername, layerGroup) {
+    var setMapView = function (view) {
+        map = new ol.Map({
+            target: 'map',
+            view: view,
+            layers: [baseGroup, overlayGroup]
+        });
+        let layerSwitcher = new ol.control.LayerSwitcher();
+        map.addControl(layerSwitcher);
+    };
+    let lon = 0, lat = 0;
+    let view;
+    let originResult = result;
+    let visableResolution = [];
+    let attrib = 'Map data &copy; 2013 Lantm?teriet, Imagery &copy; 2013 SuperMap';
     projection = 'EPSG:3857';
-    var zoom = 0;
+    let zoom = 0;
     options.maxZoom = 18;
     options.minZoom = 0;
     options.attribution = attrib;
     if (originResult.overlapDisplayed) {
         options.overlapDisplayed = originResult.overlapDisplayed;
     }
-    var envelope;
+    let envelope;
 
     if (originResult.prjCoordSys) {
-        var resolution;
+        let resolution;
         if (originResult.prjCoordSys.coordUnit) {
             resolution = scaleToResolution(originResult.scale, 96, originResult.prjCoordSys.coordUnit);
         }
@@ -38,10 +70,10 @@ function loadMap(result) {
                 envelope = originResult.bounds;
             }
             visableResolution = getStyleResolutions(envelope);
-            var scales = getScales(envelope, originResult.prjCoordSys.coordUnit);
+            let scales = getScales(envelope, originResult.prjCoordSys.coordUnit);
             if (originResult.scale) {
-                var temp;
-                for (var j = 0; j < scales.length; j++) {
+                let temp;
+                for (let j = 0; j < scales.length; j++) {
                     if (j == 0) {
                         temp = Math.abs(originResult.scale - scales[j]);
                     }
@@ -53,8 +85,8 @@ function loadMap(result) {
             }
         } else {
             if (resolution) {
-                var temp;
-                for (var j = 0; j < visableResolution.length; j++) {
+                let temp;
+                for (let j = 0; j < visableResolution.length; j++) {
                     if (j == 0) {
                         temp = Math.abs(resolution - visableResolution[j]);
                     }
@@ -82,7 +114,7 @@ function loadMap(result) {
         }
     }
 
-    var tileGrid;
+    let tileGrid;
     if (visableResolution.length > 0) {
         tileGrid = new ol.tilegrid.TileGrid({
             extent: [originResult.bounds.left, originResult.bounds.bottom, originResult.bounds.right, originResult.bounds.top],
@@ -93,7 +125,6 @@ function loadMap(result) {
         visableResolution = tileGrid.getResolutions();
     }
 
-
     view = new ol.View({
         center: [(originResult.bounds.left + originResult.bounds.right) / 2, (originResult.bounds.bottom + originResult.bounds.top) / 2],
         zoom: zoom,
@@ -102,33 +133,28 @@ function loadMap(result) {
     });
 
     if (!map)
-    map = new ol.Map({
-        target: 'map',
-        view: view
-    });
+        setMapView(view);
+    else {
+        map.getView().setCenter([(originResult.bounds.left + originResult.bounds.right) / 2, (originResult.bounds.bottom + originResult.bounds.top) / 2]);
+        map.getView().setZoom(zoom);
+    }
 
-    var format = new ol.format.MVT({
-        featureClass: ol.Feature
-    });
-    format.defaultDataProjection = new ol.proj.Projection({
-        code: projection,
-        units: ol.proj.Units.TILE_PIXELS
-    });
 
     options.url = url;
     options.tileGrid = tileGrid;
     options.cacheEnabled = false;
-    var layers = map.getLayers().getArray();
-    if (layers.length > 0) {
-        map.setView(view);
-        layers[0].setSource(new ol.source.TileSuperMapRest(options));
-        layers[0].changed();
-    } else {
-        var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest(options)
-        });
-        map.addLayer(layer);
+    let layer = new ol.layer.Tile({
+        title: layername,
+        source: new ol.source.TileSuperMapRest(options)
+    });
+
+    if (layerGroup === "result") {
+        overlayGroup.getLayers().clear();
+        overlayGroup.getLayers().push(layer);
+    } else if (layerGroup === "base") {
+        baseGroup.getLayers().push(layer);
     }
+
 }
 
 function getProjection(epsgCodeStr, bounds, resolutions) {
@@ -140,12 +166,12 @@ function getProjection(epsgCodeStr, bounds, resolutions) {
 }
 
 function getProjectionExtent() {
-    var requestUrl = url;
+    let requestUrl = url;
     requestUrl = requestUrl + "/" + "prjCoordSys/projection/extent.json";
-    var commit = new Requester();
-    var extent = commit.sendRequestWithResponse(requestUrl, "GET", null);
+    let commit = new Requester();
+    let extent = commit.sendRequestWithResponse(requestUrl, "GET", null);
     if (extent) {
-        var result = eval('(' + extent + ')');
+        let result = eval('(' + extent + ')');
         if (result && result.left && result.right && result.top && result.bottom) {
             return result;
         }
@@ -155,25 +181,25 @@ function getProjectionExtent() {
 }
 
 function scaleToResolution(scale, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
-    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    let inchPerMeter = 1 / 0.0254;
+    let meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+    let resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
     resolution = 1 / resolution;
     return resolution;
 }
 
 function resolutionToScale(resolution, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
+    let inchPerMeter = 1 / 0.0254;
     // 地球半径。
-    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
-    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    let meterPerMapUnit = getMeterPerMapUnit(mapUnit);
+    let scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
     scale = 1 / scale;
     return scale;
 }
 
 function getMeterPerMapUnit(mapUnit) {
-    var earchRadiusInMeters = 6378137;// 6371000;
-    var meterPerMapUnit;
+    let earchRadiusInMeters = 6378137;// 6371000;
+    let meterPerMapUnit;
     if (mapUnit == "METER") {
         meterPerMapUnit = 1;
     } else if (mapUnit == "DEGREE") {
@@ -191,9 +217,9 @@ function getMeterPerMapUnit(mapUnit) {
 
 //由于mvt的style渲染必须要传一个完整的分辨率数组，这里计算出一个从0开始的分辨率数组
 function getStyleResolutions(bounds) {
-    var styleResolutions = [];
-    var temp = Math.abs(bounds.left - bounds.right) / 512;
-    for (var i = 0; i < 22; i++) {
+    let styleResolutions = [];
+    let temp = Math.abs(bounds.left - bounds.right) / 512;
+    for (let i = 0; i < 22; i++) {
         if (i == 0) {
             styleResolutions[i] = temp;
             continue;
@@ -205,10 +231,10 @@ function getStyleResolutions(bounds) {
 }
 
 function getScales(bounds, coordUnit) {
-    var resolution0 = Math.abs(bounds.left - bounds.right) / 512;
-    var temp = resolutionToScale(resolution0, 96, coordUnit);
-    var scales = [];
-    for (var i = 0; i < 22; i++) {
+    let resolution0 = Math.abs(bounds.left - bounds.right) / 512;
+    let temp = resolutionToScale(resolution0, 96, coordUnit);
+    let scales = [];
+    for (let i = 0; i < 22; i++) {
         if (i == 0) {
             scales[i] = temp;
             continue;
@@ -219,7 +245,7 @@ function getScales(bounds, coordUnit) {
     return scales;
 }
 
-var Requester = function () {
+let Requester = function () {
     this.commit = null;
     try {
         this.commit = new ActiveXObject("Msxml2.XMLHTTP");
@@ -237,13 +263,13 @@ var Requester = function () {
      * 发送异步请求。
      */
     this.sendRequest = function (url, method, entry, onComplete) {
-        var xhr = this.commit;
+        let xhr = this.commit;
         xhr.open(method, url, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         xhr.onreadystatechange = function () {
-            var readyState = xhr.readyState;
+            let readyState = xhr.readyState;
             if (readyState == 4) {
-                var responseText = xhr.responseText;
+                let responseText = xhr.responseText;
                 onComplete(responseText);
 
                 xhr.onreadystatechange = function () {
@@ -257,7 +283,7 @@ var Requester = function () {
      * 发送一个同步请求。
      */
     this.sendRequestWithResponse = function (url, method, entry) {
-        var xhr = this.commit;
+        let xhr = this.commit;
         xhr.open(method, encodeURI(url), false);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         try {

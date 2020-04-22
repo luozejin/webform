@@ -9,9 +9,27 @@
     <link href="libs/dist/openlayers/4.6.5/ol.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="css/mapul.css"/>
-    <link rel="stylesheet" href="css/form.css"/>
-</head>
+    <link rel="stylesheet" href="css/terrainsuitability.css"/>
+    <link rel="stylesheet" href="openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.css"/>
+    <link rel="stylesheet" href="Font-Awesome-3.2.1/css/font-awesome.css">
 
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol.js"></script>
+    <script type="text/javascript" src="openlayers/iclient-openlayers.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.js"></script>
+    <script type="text/javascript" src="InitMap.js"></script>
+</head>
+<style>
+    .layer-switcher {
+        position: absolute;
+        top: 0.5em;
+        left: 3.5em;
+        right: unset;
+        text-align: left;
+    }
+</style>
 <body style="background: #1E1E1E">
 <div id="main">
     <div class="mapTop">
@@ -30,7 +48,7 @@
         <div class="mid">
             <div class="mid-1" style="margin-top: 20px">
                 <span class="mid-1-one">输入数据路径</span>
-                <input type="text" name="path" value="E:\Jin\work\idesktop\dem.tif">
+                <input type="text" value="C:\Users\0.0\Desktop\data\dem.tif" name="path">
             </div>
 
             <div class="mid-1">
@@ -45,7 +63,7 @@
                 <input type="text" name="54396dd9minValue" class="mu" value="3.0"
                        onfocus="if (value =='3.0'){value =''}"
                        onblur="if (value ==''){value='3.0'}">
-                <span style="margin-left: 17px;">—</span>
+                <span style="margin-left: 17px;">——</span>
                 <input type="text" name="54396dd9maxValue" class="mo" value="24.99"
                        onfocus="if (value =='24.99'){value =''}" onblur="if (value ==''){value='24.99'}">
             </div>
@@ -55,7 +73,7 @@
                 <input type="text" name="f1e1b405minValue" class="mu" value="30.0"
                        onfocus="if (value =='30.0'){value =''}"
                        onblur="if (value ==''){value='30.0'}">
-                <span style="margin-left: 17px;">—</span>
+                <span style="margin-left: 17px;">——</span>
                 <input type="text" name="f1e1b405maxValue" class="mo" value="25.0"
                        onfocus="if (value =='25.0'){value =''}"
                        onblur="if (value ==''){value='25.0'}">
@@ -73,7 +91,7 @@
                 <input type="text" name="ea036971minValue" class="mu" value="60.0"
                        onfocus="if (value =='60.0'){value =''}"
                        onblur="if (value ==''){value='60.0'}">
-                <span style="margin-left: 17px;">—</span>
+                <span style="margin-left: 17px;">——</span>
                 <input type="text" name="ea036971maxValue" class="mo" value="200.0"
                        onfocus="if (value =='200.0'){value =''}" onblur="if (value ==''){value='200.0'}">
             </div>
@@ -84,7 +102,7 @@
                 <input type="text" name="22afb752minValue" class="mu" value="5.0"
                        onfocus="if (value =='5.0'){value =''}"
                        onblur="if (value ==''){value='5.0'}">
-                <span style="margin-left: 17px;">—</span>
+                <span style="margin-left: 17px;">——</span>
                 <input type="text" name="22afb752maxValue" class="mo" value="99.99"
                        onfocus="if (value =='99.99'){value =''}" onblur="if (value ==''){value='99.99'}">
             </div>
@@ -93,21 +111,27 @@
                 <span class="mid-1-two">次适宜范围</span>
                 <input type="text" name="17f9bea7minValue" class="mu" value="100.0"
                        onfocus="if (value =='100.0'){value =''}" onblur="if (value ==''){value='100.0'}">
-                <span style="margin-left: 17px;">—</span>
+                <span style="margin-left: 17px;">——</span>
                 <input type="text" name="17f9bea7maxValue" class="mo" value="400.0"
                        onfocus="if (value =='400.0'){value =''}" onblur="if (value ==''){value='400.0'}">
             </div>
 
             <div class="mid-1">
                 <span class="mid-1-one">结果保存路径</span>
-                <input type="text" name="server" id="server" value="E:\Jin\work\idesktop\ t1.udbx">
+                <input type="text" name="server" value="C:\Users\0.0\Desktop\data\tttt.udbx" id="server">
             </div>
             <div class="mid-1">
                 <span class="mid-1-one">结果数据集名</span>
-                <input type="text" name="outputDatasetName" id="outputDatasetName" value="udbx">
+                <input type="text" name="outputDatasetName" value="result" id="outputDatasetName">
             </div>
         </div>
-        <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
+        <div style="display: block;margin-left: 10px;margin-top: 20px">
+            <span hidden id="loading"><i style="left: 100px" class="icon-spinner icon-spin icon-2x"></i><span
+                    style="font-size: large "> 分析中...</span></span>
+            <span hidden id="success" class="alert alert-success" role="alert">分析成功</span>
+            <span hidden id="false" style="width:500px" class="alert alert-danger" role="alert">分析失败</span>
+            <input type="button" name="button" value="提交" id="bit" class="btn btn-outline-info">
+        </div>
     </form>
 </div>
 
@@ -126,17 +150,11 @@
     }
 </script>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
-    <link rel="stylesheet" href="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.min.css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
-    <script type="text/javascript" src="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"></script>
-
 <script type="text/javascript">
     var Adata = {
         "processes": {
             "e2a798a5-c994-4bd6-b2c7-499f779aeab1": {
-                "readgeotiff": {
+                "bdt-raster:readgeotiff": {
                     "path": "file:///E:/Jin/work/dem.tif",
                     "tileSize": "256",
                     "partitionCount": "0",
@@ -145,15 +163,15 @@
                 }
             },
             "33570a2c-d79c-45d8-9182-08dc6110a8bc": {
-                "slope": {
+                "bdt-raster:slope": {
                     "zFactor": "1.171E-5"
                 }
             },
             "52d16072-38c7-4945-b944-f88e2c4dc8bc": {
-                "aspect": {}
+                "bdt-raster:aspect": {}
             },
             "54396dd9-2d9a-486c-ab99-fe4b397e9bf8": {
-                "mathanalystconbetween": {
+                "bdt-raster:mathanalystconbetween": {
                     "minValue": "3.0",
                     "maxValue": "24.99",
                     "trueValue": "2.0",
@@ -161,7 +179,7 @@
                 }
             },
             "f1e1b405-0bad-4116-b05b-2db551ba8205": {
-                "mathanalystconbetween": {
+                "bdt-raster:mathanalystconbetween": {
                     "minValue": "25.0",
                     "maxValue": "45.0",
                     "trueValue": "1.0",
@@ -169,7 +187,7 @@
                 }
             },
             "ea036971-024a-4de6-84bc-7c3d32ea19ff": {
-                "mathanalystconbetween": {
+                "bdt-raster:mathanalystconbetween": {
                     "minValue": "60.0",
                     "maxValue": "200.0",
                     "trueValue": "1.0",
@@ -177,7 +195,7 @@
                 }
             },
             "22afb752-01bb-461e-bd5d-2d975dafcdf4": {
-                "mathanalystconbetween": {
+                "bdt-raster:mathanalystconbetween": {
                     "minValue": "5.0",
                     "maxValue": "99.99",
                     "trueValue": "2.0",
@@ -185,7 +203,7 @@
                 }
             },
             "17f9bea7-9fc6-46e8-9024-576b3c613dd5": {
-                "mathanalystconbetween": {
+                "bdt-raster:mathanalystconbetween": {
                     "minValue": "100.0",
                     "maxValue": "400.0",
                     "trueValue": "1.0",
@@ -193,19 +211,19 @@
                 }
             },
             "d016c886-409e-4e1c-bbeb-285fdc740878": {
-                "mathanalystadd": {}
+                "bdt-raster:mathanalystadd": {}
             },
             "78ea8ff4-ff4a-44fe-946b-b0261bdebe0b": {
-                "mathanalystadd": {}
+                "bdt-raster:mathanalystadd": {}
             },
             "ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3": {
-                "mathanalystadd": {}
+                "bdt-raster:mathanalystadd": {}
             },
             "c551c8c8-e430-42a2-b1e0-5d9fc03932f4": {
-                "mathanalystadd": {}
+                "bdt-raster:mathanalystadd": {}
             },
             "38473b4_e7279c4": {
-                "rastersaveassdx": {
+                "bdt-raster:rastersaveassdx": {
                     "server": "E:\\Jin\\work\\idesktop\\ terrainsuitability.udbx",
                     "engineType": "UDBX",
                     "alias": "dfc",
@@ -300,32 +318,32 @@
         // console.log(jsonObj); // object 表单json
 
         // 表单数据的替换
-        Adata["processes"]["e2a798a5-c994-4bd6-b2c7-499f779aeab1"]["readgeotiff"]["path"] = jsonObj.path; // 地址
-        Adata["processes"]["e2a798a5-c994-4bd6-b2c7-499f779aeab1"]["readgeotiff"]["srcEpsgCode"] = jsonObj.srcEpsgCode; // 输入数据epsg
+        Adata["processes"]["e2a798a5-c994-4bd6-b2c7-499f779aeab1"]["bdt-raster:readgeotiff"]["path"] = jsonObj.path; // 地址
+        Adata["processes"]["e2a798a5-c994-4bd6-b2c7-499f779aeab1"]["bdt-raster:readgeotiff"]["srcEpsgCode"] = jsonObj.srcEpsgCode; // 输入数据epsg
 
-        Adata["processes"]["54396dd9-2d9a-486c-ab99-fe4b397e9bf8"]["mathanalystconbetween"]["minValue"] = jsonObj["54396dd9minValue"]; // 坡度因子
-        Adata["processes"]["54396dd9-2d9a-486c-ab99-fe4b397e9bf8"]["mathanalystconbetween"]["54396dd9maxValue"] = jsonObj["3acf9dff_21fc62maxValue"];
+        Adata["processes"]["54396dd9-2d9a-486c-ab99-fe4b397e9bf8"]["bdt-raster:mathanalystconbetween"]["minValue"] = jsonObj["54396dd9minValue"]; // 坡度因子
+        Adata["processes"]["54396dd9-2d9a-486c-ab99-fe4b397e9bf8"]["bdt-raster:mathanalystconbetween"]["54396dd9maxValue"] = jsonObj["3acf9dff_21fc62maxValue"];
 
-        Adata["processes"]["f1e1b405-0bad-4116-b05b-2db551ba8205"]["mathanalystconbetween"]["minValue"] = jsonObj["f1e1b405minValue"];
-        Adata["processes"]["f1e1b405-0bad-4116-b05b-2db551ba8205"]["mathanalystconbetween"]["maxValue"] = jsonObj["f1e1b405maxValue"];
+        Adata["processes"]["f1e1b405-0bad-4116-b05b-2db551ba8205"]["bdt-raster:mathanalystconbetween"]["minValue"] = jsonObj["f1e1b405minValue"];
+        Adata["processes"]["f1e1b405-0bad-4116-b05b-2db551ba8205"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["f1e1b405maxValue"];
 
-        Adata["processes"]["33570a2c-d79c-45d8-9182-08dc6110a8bc"]["slope"]["zFactor"] = jsonObj.zFactor;
+        Adata["processes"]["33570a2c-d79c-45d8-9182-08dc6110a8bc"]["bdt-raster:slope"]["zFactor"] = jsonObj.zFactor;
 
-        Adata["processes"]["ea036971-024a-4de6-84bc-7c3d32ea19ff"]["mathanalystconbetween"]["minValue"] = jsonObj["ea036971minValue"]; //坡向因子
-        Adata["processes"]["ea036971-024a-4de6-84bc-7c3d32ea19ff"]["mathanalystconbetween"]["maxValue"] = jsonObj["ea036971maxValue"];
+        Adata["processes"]["ea036971-024a-4de6-84bc-7c3d32ea19ff"]["bdt-raster:mathanalystconbetween"]["minValue"] = jsonObj["ea036971minValue"]; //坡向因子
+        Adata["processes"]["ea036971-024a-4de6-84bc-7c3d32ea19ff"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["ea036971maxValue"];
 
-        Adata["processes"]["22afb752-01bb-461e-bd5d-2d975dafcdf4"]["mathanalystconbetween"]["maxValue"] = jsonObj["22afb752maxValue"]; // 高程因子
-        Adata["processes"]["22afb752-01bb-461e-bd5d-2d975dafcdf4"]["mathanalystconbetween"]["maxValue"] = jsonObj["22afb752maxValue"];
+        Adata["processes"]["22afb752-01bb-461e-bd5d-2d975dafcdf4"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["22afb752maxValue"]; // 高程因子
+        Adata["processes"]["22afb752-01bb-461e-bd5d-2d975dafcdf4"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["22afb752maxValue"];
 
-        Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
-        Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
+        Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
+        Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
 
-        Adata["processes"]["38473b4_e7279c4"]["rastersaveassdx"]["server"] = jsonObj["server"];
-        Adata["processes"]["38473b4_e7279c4"]["rastersaveassdx"]["outputDatasetName"] = jsonObj["outputDatasetName"];
-        Adata["processes"]["38473b4_e7279c4"]["rastersaveassdx"]["alias"] = jsonObj["outputDatasetName"];
+        Adata["processes"]["38473b4_e7279c4"]["bdt-raster:rastersaveassdx"]["server"] = jsonObj["server"];
+        Adata["processes"]["38473b4_e7279c4"]["bdt-raster:rastersaveassdx"]["outputDatasetName"] = jsonObj["outputDatasetName"];
+        Adata["processes"]["38473b4_e7279c4"]["bdt-raster:rastersaveassdx"]["alias"] = jsonObj["outputDatasetName"];
 
         var dataJson = JSON.stringify(Adata);
-        // console.log(dataJson);
+        console.log(dataJson);
         $("#success").hide();
         $("#false").hide();
         $("#loading").show();
@@ -345,11 +363,11 @@
                     var requestbody = {
                         "processes": {
                             "a99cb562_6186e8": {
-                                "publishmap": {
+                                "publish:publishmap": {
                                     "server": "http://localhost:8090",
-                                    "user": "luozejin",
-                                    "password": "a.201997",
-                                    "styleFile": "E:\\Jin\\work\\webform\\webform\\Terrainsuitability_style.xml",//风格模板位置
+                                    "user": "admin",
+                                    "password": "iServer1",
+                                    "styleFile": "C:\\Users\\0.0\\Desktop\\webform\\Terrainsuitability_style.xml",//风格模板位置
                                     "dataConnection": "sdx --server=" + Adata + " --dbType=udbx --dataset=" + $("#outputDatasetName").val() + "_0",
                                     "isEditable": "false"
                                 }
@@ -363,30 +381,14 @@
                         contentType: 'application/json',
                         success: function (result) {
                             //截取地图名
-                            console.log(result);
                             var serviceAddress = JSON.parse(result)[0]["serviceAddress"];
                             var temp = serviceAddress.split("/");
                             var mapname = temp[temp.length - 2].replace("map-", "");
                             var url = serviceAddress + "/maps/" + mapname;
                             $("#success").show();
                             $("#loading").hide();
-                            init(url);
-                           console.log(url);
-                            //  地图叠加  
-                            var map, urlWorld = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
-                            map = L.map('map', {
-                                crs: L.CRS.EPSG4326,
-                                center: [40, 118],
-                                maxZoom: 18,
-                                zoom: 6
-                            });
+                            init(url, "result", "result");
 
-                            L.supermap.tiledMapLayer(urlWorld).addTo(map);
-                            L.supermap.tiledMapLayer(url, {
-                                transparent: true,
-                                opacity: 0.9,
-                                zoom: 6
-                            }).addTo(map);
                         },
                         error: function (jqXHR) {
                             $("#false").show();
@@ -407,18 +409,9 @@
 
 </script>
 
-<script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol.js"></script>
-<script type="text/javascript" src="openlayers/iclient-openlayers.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./json_parse.js"></script>
-<script type="text/javascript" src="./toJSON.js"></script>
-<script type="text/javascript" src="./colorramps.js"></script>
-<script type="text/javascript" src="InitMap.js"></script>
 <script>
-    var url = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
-    init(url);
-    
+    var url = "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4326";
+    init(url, "底图", "base");
 </script>
 </body>
 
