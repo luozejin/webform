@@ -52,14 +52,14 @@
             <div class="Fmid-1">
                 <span class="Fmid-1-one">一调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=DLTB_2"
+                       value="sdx --server=/home/yanshi0429/data/Landuse.udbx --dbType=udbx --dataset=DLTB_2"
                        name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
             </div>
 
             <div class="Fmid-1">
                 <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/0.0/Desktop/data/Landuse.udbx --dbType=udbx --dataset=DLTB_ed_2"
+                       value="sdx --server=/home/yanshi0429/data/Landuse.udbx --dbType=udbx --dataset=DLTB_ed_2"
                        name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
             </div>
 
@@ -68,7 +68,7 @@
                 <select name="operator" id="" class="Mselect">
                     <option value="Union">Union</option>
                     <option value="Clip">Clip</option>
-                    <option value="intersect">intersect</option>
+                    <option value="Intersect">Intersect</option>
                     <option value="Erase">Erase</option>
                     <option value="Update">Update</option>
                     <option value="XOR">XOR</option>
@@ -116,7 +116,7 @@
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
                 <input type="text"
-                       value="sdx --server=C:/Users/0.0/Desktop/data/LanduseResult.udbx --dbType=udbx --dataset=aaa"
+                       value="sdx --server=/home/yanshi0429/data/LanduseResult.udbx --dbType=udbx --dataset=aaa"
                        name="bdt-vec-io:saveas">
             </div>
             <div class="Fmid-1">
@@ -167,19 +167,22 @@
 
 <script type="text/javascript">
     var base = "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China";
-    var yidiao = "http://localhost:8090/iserver/services/map-data/rest/maps/DLTB_2@Landuse";
-    var erdiao = "http://localhost:8090/iserver/services/map-data/rest/maps/DLTB_ed_2@Landuse";
-    init(base, "", "", function (result) {
-        addlayer(result.result, "底图", "base");
-        init(yidiao, "一调", "base", function (r) {
-            addlayer(r.result, "一调", "base");
-            init(erdiao, "二调", "base");
-        });
-    });
-
-
-
-
+    var yidiao = "http://192.168.12.34:8090/iserver/services/map-Landuse/rest/maps/DLTB_2@Landuse";
+    var erdiao = "http://192.168.12.34:8090/iserver/services/map-Landuse/rest/maps/DLTB_ed_2@Landuse";
+    var params = {
+        url: base,
+        callback: function (result) {
+            result && result.result && addlayer(result.result, {layername: "底图", layerGroup: "base"});
+            init({
+                url: yidiao,
+                callback: function (r) {
+                    addlayer(r.result, {layername: "一调", layerGroup: "base", opacity: 1});
+                    init({url: erdiao, layername: "二调", layerGroup: "base", opacity: 1});
+                }
+            });
+        }
+    };
+    init(params);
     var Adata = {
         "processes": {
             "f2fccedf-7f51-4641-9a57-9aa4cd5e7058": {
@@ -239,9 +242,9 @@
             },
             "63f307ac-afed-4720-bbfd-423ac68a0ff9": {
                 "publish:publishmap": {
-                    "server": "http://localhost:8090",
-                    "user": "admin",
-                    "password": "iServer1",
+                    "server": "http://192.168.12.34:8090",
+                    "user": "supermap",
+                    "password": "Super123",
                     "isEditable": "false"
                 }
             },
@@ -329,7 +332,7 @@
     function onSubmit(dataJson) {
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8097/geoprocessing/multiprocess',
+            url: 'http://192.168.12.34:8097/geoprocessing/multiprocess',
             data: dataJson,
             contentType: 'application/json',
             success: function (Adata) {

@@ -9,13 +9,13 @@ var baseGroup = new ol.layer.Group({
 });
 var layerObj, mapName, projection;
 
-function init(url, layername, layerGroup, callback) {
-    this.url = url;
-    if (callback) {
-        new ol.supermap.MapService(url).getMapInfo(callback);
+function init(params) {
+    url = params.url;
+    if (params.callback) {
+        new ol.supermap.MapService(url).getMapInfo(params.callback);
     } else {
-        new ol.supermap.MapService(url).getMapInfo(function (result) {
-            addlayer(result.result, layername, layerGroup);
+        new ol.supermap.MapService(params.url).getMapInfo(function (result) {
+            addlayer(result.result, params);
         });
     }
 }
@@ -24,6 +24,7 @@ function addresult(url) {
     options.url = url;
     options.cacheEnabled = false;
     let layer = new ol.layer.Tile({
+        opacity: 0.5,
         title: "result",
         source: new ol.source.TileSuperMapRest(options)
     });
@@ -31,7 +32,10 @@ function addresult(url) {
     overlayGroup.getLayers().push(layer);
 }
 
-function addlayer(result, layername, layerGroup) {
+function addlayer(result, params) {
+    var layername = params.layername;
+    var layerGroup = params.layerGroup;
+    var opacity = params.opacity;
     var setMapView = function (view) {
         map = new ol.Map({
             target: 'map',
@@ -144,6 +148,7 @@ function addlayer(result, layername, layerGroup) {
     options.tileGrid = tileGrid;
     options.cacheEnabled = false;
     let layer = new ol.layer.Tile({
+        opacity: opacity || 1,
         title: layername,
         source: new ol.source.TileSuperMapRest(options)
     });
