@@ -24,7 +24,6 @@ function addresult(url) {
     options.url = url;
     options.cacheEnabled = false;
     let layer = new ol.layer.Tile({
-        opacity: 0.5,
         title: "result",
         source: new ol.source.TileSuperMapRest(options)
     });

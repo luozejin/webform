@@ -36,7 +36,7 @@
         <img src="img/logo.png"/>
         <span class="topTitle">地形适宜性分析</span>
     </div>
-    <div id="map" style="width: 100%;height:92%"></div>
+    <div id="map" style="width: 100%;height:93%"></div>
 
     <!-- 按钮、表单 -->
     <button id="btn" class="btn btn-outline-dark">地形适宜性分析</button>
@@ -48,12 +48,12 @@
         <div class="mid">
             <div class="mid-1" style="margin-top: 20px">
                 <span class="mid-1-one">输入数据路径</span>
-                <input type="text" value="/home/yanshi0429/data/dem.tif" name="path">
+                <input type="text" value="/home/yanshi0429/data/ASTGTM2_N40E116_dem.tif" name="readgeotiff-path">
             </div>
 
             <div class="mid-1">
                 <span class="mid-1-one">输入数据epsg</span>
-                <input type="text" name="srcEpsgCode" value="-1" onfocus="if (value =='-1'){value =''}"
+                <input type="text" name="readgeotiff-srcEpsgCode" value="-1" onfocus="if (value =='-1'){value =''}"
                        onblur="if (value ==''){value='-1'}">
             </div>
 
@@ -61,69 +61,69 @@
             <p>坡度因子</p>
             <div class="mid-2">
                 <span class="mid-1-two">最适宜范围</span>
-                <input type="text" name="54396dd9minValue" class="mu" value="3.0"
+                <input type="text" name="mathanalystconbetween-minValue" class="mu" value="3.0"
                        onfocus="if (value =='3.0'){value =''}"
                        onblur="if (value ==''){value='3.0'}">
                 <span style="margin-left: 10px;">—</span>
-                <input type="text" name="54396dd9maxValue" class="mo" value="24.99"
+                <input type="text" name="mathanalystconbetween-maxValue" class="mo" value="24.99"
                        onfocus="if (value =='24.99'){value =''}" onblur="if (value ==''){value='24.99'}">
             </div>
 
             <div class="mid-2">
                 <span class="mid-1-two">次适宜范围</span>
-                <input type="text" name="f1e1b405minValue" class="mu" value="30.0"
-                       onfocus="if (value =='30.0'){value =''}"
-                       onblur="if (value ==''){value='30.0'}">
-                <span style="margin-left: 10px;">—</span>
-                <input type="text" name="f1e1b405maxValue" class="mo" value="25.0"
+                <input type="text" name="mathanalystconbetween_1-minValue" class="mu" value="25.0"
                        onfocus="if (value =='25.0'){value =''}"
                        onblur="if (value ==''){value='25.0'}">
+                <span style="margin-left: 10px;">—</span>
+                <input type="text" name="mathanalystconbetween_1-maxValue" class="mo" value="45.0"
+                       onfocus="if (value =='45.0'){value =''}"
+                       onblur="if (value ==''){value='45.0'}">
             </div>
 
             <div class="mid-2">
                 <span class="mid-1-two">zFactor</span>
-                <input type="text" name="zFactor" value="1.171E-5" onfocus="if (value =='1.171E-5'){value =''}"
+                <input type="text" name="slope-zFactor" value="1.171E-5" onfocus="if (value =='1.171E-5'){value =''}"
                        onblur="if (value ==''){value='1.171E-5'}">
             </div>
             <p id="dividingLine"></p>
             <p>坡向因子</p>
             <div class="mid-2">
                 <span class="mid-1-two">适宜范围</span>
-                <input type="text" name="ea036971minValue" class="mu" value="60.0"
+                <input type="text" name="mathanalystconbetween_2-minValue" class="mu" value="60.0"
                        onfocus="if (value =='60.0'){value =''}"
                        onblur="if (value ==''){value='60.0'}">
                 <span style="margin-left: 10px;">—</span>
-                <input type="text" name="ea036971maxValue" class="mo" value="200.0"
+                <input type="text" name="mathanalystconbetween_2-maxValue" class="mo" value="200.0"
                        onfocus="if (value =='200.0'){value =''}" onblur="if (value ==''){value='200.0'}">
             </div>
             <p id="dividingLine"></p>
             <p>高程因子</p>
             <div class="mid-2">
                 <span class="mid-1-two">最适宜范围</span>
-                <input type="text" name="22afb752minValue" class="mu" value="5.0"
+                <input type="text" name="mathanalystconbetween_3-minValue" class="mu" value="5.0"
                        onfocus="if (value =='5.0'){value =''}"
                        onblur="if (value ==''){value='5.0'}">
                 <span style="margin-left: 10px;">—</span>
-                <input type="text" name="22afb752maxValue" class="mo" value="99.99"
+                <input type="text" name="mathanalystconbetween_3-maxValue" class="mo" value="99.99"
                        onfocus="if (value =='99.99'){value =''}" onblur="if (value ==''){value='99.99'}">
             </div>
 
             <div class="mid-2">
                 <span class="mid-1-two">次适宜范围</span>
-                <input type="text" name="17f9bea7minValue" class="mu" value="100.0"
+                <input type="text" name="mathanalystconbetween_4-minValue" class="mu" value="100.0"
                        onfocus="if (value =='100.0'){value =''}" onblur="if (value ==''){value='100.0'}">
                 <span style="margin-left: 10px;">—</span>
-                <input type="text" name="17f9bea7maxValue" class="mo" value="400.0"
+                <input type="text" name="mathanalystconbetween_4-maxValue" class="mo" value="400.0"
                        onfocus="if (value =='400.0'){value =''}" onblur="if (value ==''){value='400.0'}">
             </div>
             <p id="dividingLine"></p>
             <div class="mid-1" style="margin-top: 15px;">
                 <span class="mid-1-one">结果保存路径</span>
-                <input type="text" name="server" value="/home/yanshi0429/data/dem.udbx" id="server">
+                <input type="text" name="rastersaveassdx-server" value="/home/yanshi0429/data/dem.udbx" id="server">
             </div>
             <div class="mid-1">
                 <span class="mid-1-one">结果数据集名</span>
-                <input type="text" name="outputDatasetName" value="result" id="outputDatasetName">
+                <input type="text" name="rastersaveassdx-outputDatasetName" value="result" id="outputDatasetName">
             </div>
         </div>
         <div style="display: block;margin-left: 10px;margin-top: 20px">
@@ -152,163 +152,6 @@
 </script>
 
 <script type="text/javascript">
-    var Adata = {
-        "processes": {
-            "e2a798a5-c994-4bd6-b2c7-499f779aeab1": {
-                "bdt-raster:readgeotiff": {
-                    "path": "file:///E:/Jin/work/dem.tif",
-                    "tileSize": "256",
-                    "partitionCount": "0",
-                    "desEpsgCode": "-1",
-                    "srcEpsgCode": "-1"
-                }
-            },
-            "33570a2c-d79c-45d8-9182-08dc6110a8bc": {
-                "bdt-raster:slope": {
-                    "zFactor": "1.171E-5"
-                }
-            },
-            "52d16072-38c7-4945-b944-f88e2c4dc8bc": {
-                "bdt-raster:aspect": {}
-            },
-            "54396dd9-2d9a-486c-ab99-fe4b397e9bf8": {
-                "bdt-raster:mathanalystconbetween": {
-                    "minValue": "3.0",
-                    "maxValue": "24.99",
-                    "trueValue": "2.0",
-                    "falseValue": "0.0"
-                }
-            },
-            "f1e1b405-0bad-4116-b05b-2db551ba8205": {
-                "bdt-raster:mathanalystconbetween": {
-                    "minValue": "25.0",
-                    "maxValue": "45.0",
-                    "trueValue": "1.0",
-                    "falseValue": "0.0"
-                }
-            },
-            "ea036971-024a-4de6-84bc-7c3d32ea19ff": {
-                "bdt-raster:mathanalystconbetween": {
-                    "minValue": "60.0",
-                    "maxValue": "200.0",
-                    "trueValue": "1.0",
-                    "falseValue": "0.0"
-                }
-            },
-            "22afb752-01bb-461e-bd5d-2d975dafcdf4": {
-                "bdt-raster:mathanalystconbetween": {
-                    "minValue": "5.0",
-                    "maxValue": "99.99",
-                    "trueValue": "2.0",
-                    "falseValue": "0.0"
-                }
-            },
-            "17f9bea7-9fc6-46e8-9024-576b3c613dd5": {
-                "bdt-raster:mathanalystconbetween": {
-                    "minValue": "100.0",
-                    "maxValue": "400.0",
-                    "trueValue": "1.0",
-                    "falseValue": "0.0"
-                }
-            },
-            "d016c886-409e-4e1c-bbeb-285fdc740878": {
-                "bdt-raster:mathanalystadd": {}
-            },
-            "78ea8ff4-ff4a-44fe-946b-b0261bdebe0b": {
-                "bdt-raster:mathanalystadd": {}
-            },
-            "ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3": {
-                "bdt-raster:mathanalystadd": {}
-            },
-            "c551c8c8-e430-42a2-b1e0-5d9fc03932f4": {
-                "bdt-raster:mathanalystadd": {}
-            },
-            "38473b4_e7279c4": {
-                "bdt-raster:rastersaveassdx": {
-                    "server": "E:\\Jin\\work\\idesktop\\ terrainsuitability.udbx",
-                    "engineType": "UDBX",
-                    "alias": "dfc",
-                    "outputDatasetName": "dffg",
-                    "blockingWrite": "true",
-                    "startHeight": "0.0",
-                    "endHeight": "0.0",
-                    "datasetType": "Grid"
-                }
-            }
-        },
-        "connect": [
-            {
-                "from": "54396dd9-2d9a-486c-ab99-fe4b397e9bf8|RasterRDD",
-                "to": "78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|rasterRDD"
-            },
-            {
-                "from": "ea036971-024a-4de6-84bc-7c3d32ea19ff|RasterRDD",
-                "to": "ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|rasterRDD"
-            },
-            {
-                "from": "f1e1b405-0bad-4116-b05b-2db551ba8205|RasterRDD",
-                "to": "78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|otherRasterRDD"
-            },
-            {
-                "from": "22afb752-01bb-461e-bd5d-2d975dafcdf4|RasterRDD",
-                "to": "d016c886-409e-4e1c-bbeb-285fdc740878|rasterRDD"
-            },
-            {
-                "from": "17f9bea7-9fc6-46e8-9024-576b3c613dd5|RasterRDD",
-                "to": "d016c886-409e-4e1c-bbeb-285fdc740878|otherRasterRDD"
-            },
-            {
-                "from": "e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                "to": "17f9bea7-9fc6-46e8-9024-576b3c613dd5|rasterRDD"
-            },
-            {
-                "from": "e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                "to": "33570a2c-d79c-45d8-9182-08dc6110a8bc|rasterRDD"
-            },
-            {
-                "from": "52d16072-38c7-4945-b944-f88e2c4dc8bc|RasterRDD",
-                "to": "ea036971-024a-4de6-84bc-7c3d32ea19ff|rasterRDD"
-            },
-            {
-                "from": "d016c886-409e-4e1c-bbeb-285fdc740878|RasterRDD",
-                "to": "ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|otherRasterRDD"
-            },
-            {
-                "from": "e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                "to": "52d16072-38c7-4945-b944-f88e2c4dc8bc|rasterRDD"
-            },
-            {
-                "from": "e2a798a5-c994-4bd6-b2c7-499f779aeab1|RasterRDD",
-                "to": "22afb752-01bb-461e-bd5d-2d975dafcdf4|rasterRDD"
-            },
-            {
-                "from": "78ea8ff4-ff4a-44fe-946b-b0261bdebe0b|RasterRDD",
-                "to": "c551c8c8-e430-42a2-b1e0-5d9fc03932f4|rasterRDD"
-            },
-            {
-                "from": "ce460c5c-c89c-46a7-b6f3-4af1eff3cbd3|RasterRDD",
-                "to": "c551c8c8-e430-42a2-b1e0-5d9fc03932f4|otherRasterRDD"
-            },
-            {
-                "from": "33570a2c-d79c-45d8-9182-08dc6110a8bc|RasterRDD",
-                "to": "f1e1b405-0bad-4116-b05b-2db551ba8205|rasterRDD"
-            },
-            {
-                "from": "33570a2c-d79c-45d8-9182-08dc6110a8bc|RasterRDD",
-                "to": "54396dd9-2d9a-486c-ab99-fe4b397e9bf8|rasterRDD"
-            },
-            {
-                "from": "c551c8c8-e430-42a2-b1e0-5d9fc03932f4|RasterRDD",
-                "to": "38473b4_e7279c4|rasterRDD"
-            }
-        ],
-        "env": {
-            "master": "",
-            "appName": "",
-            "settings": ""
-        },
-        "ui": {}
-    }
     // 序列化表单
     $('#bit').click(function () {
         var formData = $('#box').serializeArray();
@@ -316,69 +159,33 @@
         for (var i in formData) {
             jsonObj[formData[i].name] = formData[i].value;
         }
-        // console.log(jsonObj); // object 表单json
-
-        // 表单数据的替换
-        Adata["processes"]["e2a798a5-c994-4bd6-b2c7-499f779aeab1"]["bdt-raster:readgeotiff"]["path"] = jsonObj.path; // 地址
-        Adata["processes"]["e2a798a5-c994-4bd6-b2c7-499f779aeab1"]["bdt-raster:readgeotiff"]["srcEpsgCode"] = jsonObj.srcEpsgCode; // 输入数据epsg
-
-        Adata["processes"]["54396dd9-2d9a-486c-ab99-fe4b397e9bf8"]["bdt-raster:mathanalystconbetween"]["minValue"] = jsonObj["54396dd9minValue"]; // 坡度因子
-        Adata["processes"]["54396dd9-2d9a-486c-ab99-fe4b397e9bf8"]["bdt-raster:mathanalystconbetween"]["54396dd9maxValue"] = jsonObj["3acf9dff_21fc62maxValue"];
-
-        Adata["processes"]["f1e1b405-0bad-4116-b05b-2db551ba8205"]["bdt-raster:mathanalystconbetween"]["minValue"] = jsonObj["f1e1b405minValue"];
-        Adata["processes"]["f1e1b405-0bad-4116-b05b-2db551ba8205"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["f1e1b405maxValue"];
-
-        Adata["processes"]["33570a2c-d79c-45d8-9182-08dc6110a8bc"]["bdt-raster:slope"]["zFactor"] = jsonObj.zFactor;
-
-        Adata["processes"]["ea036971-024a-4de6-84bc-7c3d32ea19ff"]["bdt-raster:mathanalystconbetween"]["minValue"] = jsonObj["ea036971minValue"]; //坡向因子
-        Adata["processes"]["ea036971-024a-4de6-84bc-7c3d32ea19ff"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["ea036971maxValue"];
-
-        Adata["processes"]["22afb752-01bb-461e-bd5d-2d975dafcdf4"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["22afb752maxValue"]; // 高程因子
-        Adata["processes"]["22afb752-01bb-461e-bd5d-2d975dafcdf4"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["22afb752maxValue"];
-
-        Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
-        Adata["processes"]["17f9bea7-9fc6-46e8-9024-576b3c613dd5"]["bdt-raster:mathanalystconbetween"]["maxValue"] = jsonObj["17f9bea7maxValue"];
-
-        Adata["processes"]["38473b4_e7279c4"]["bdt-raster:rastersaveassdx"]["server"] = jsonObj["server"];
-        
-        Adata["processes"]["38473b4_e7279c4"]["bdt-raster:rastersaveassdx"]["outputDatasetName"] = jsonObj["outputDatasetName"];
-        Adata["processes"]["38473b4_e7279c4"]["bdt-raster:rastersaveassdx"]["alias"] = jsonObj["outputDatasetName"];
-
-        var dataJson = JSON.stringify(Adata);
-        console.log(dataJson);
         $("#success").hide();
         $("#false").hide();
         $("#loading").show();
-        onSubmit(dataJson)
+        onSubmit(JSON.stringify(jsonObj))
     });
 
     // post传数据给后端
     function onSubmit(dataJson) {
         $.ajax({
             type: 'POST',
-            url: 'http://192.168.12.34:8097/geoprocessing/multiprocess',
+            url: 'http://192.168.12.34:8090/iserver/services/geoprocessing/restjsr/sps.WorkflowProcessFactory.models.test:shiyixing/',
             data: dataJson,
             contentType: 'application/json',
             success: function (Adata) {
                 //拿到分析结果发布服务
                 if (Adata === $("#server").val()) {
                     var requestbody = {
-                        "processes": {
-                            "a99cb562_6186e8": {
-                                "publish:publishmap": {
-                                    "server": "http://192.168.12.34:8090",
-                                    "user": "supermap",
-                                    "password": "Super123",
-                                    "styleFile": "/home/yanshi0429/data/Terrainsuitability_style.xml",//风格模板位置
-                                    "dataConnection": "sdx --server=" + Adata + " --dbType=udbx --dataset=" + $("#outputDatasetName").val() + "_0",
-                                    "isEditable": "false"
-                                }
-                            }
-                        }, "connect": [], "env": {"master": "", "appName": "", "settings": ""}, "ui": {}
+                        "server": "http://192.168.12.34:8090",
+                        "user": "supermap",
+                        "password": "Super123",
+                        "styleFile": "/home/yanshi0429/data/Terrainsuitability_style.xml",//风格模板位置
+                        "dataConnection": "sdx --server=" + Adata + " --dbType=udbx --dataset=" + $("#outputDatasetName").val() + "_0",
+                        "isEditable": "false"
                     };
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.12.34:8097/geoprocessing/multiprocess',
+                        url: 'http://192.168.12.34:8090/iserver/services/geoprocessing/restjsr/publish:publishmap/',
                         data: JSON.stringify(requestbody),
                         contentType: 'application/json',
                         success: function (result) {
@@ -389,7 +196,7 @@
                             var url = serviceAddress + "/maps/" + mapname;
                             $("#success").show();
                             $("#loading").hide();
-                            init({url: url, layername: "result", layerGroup: "result", opacity: 0.75});
+                            init({url: url, layername: "result", layerGroup: "result"});
 
                         },
                         error: function (jqXHR) {
