@@ -49,22 +49,25 @@
             <span id="Ferr">×</span>
         </div>
         <div class="Fmid">
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">一调地类图斑数据路径<span class="defaltvalue">*</span></span>
+            <div class="Fmid-1" style="margin-top: 20px;">
+                <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
                        value="sdx --server=/home/yanshi0429/data/Landuse.udbx --dbType=udbx --dataset=DLTB_2"
                        name="20ef9b62-03f6-43b2-904c-141f8d648aa4">
             </div>
 
             <div class="Fmid-1">
-                <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
+                <span class="Fmid-1-one">三调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
                        value="sdx --server=/home/yanshi0429/data/Landuse.udbx --dbType=udbx --dataset=DLTB_ed_2"
                        name="f2fccedf-7f51-4641-9a57-9aa4cd5e7058">
             </div>
 
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">叠加分析运算类型<span class="defaltvalue">*</span></span>
+            <p id="dividingLine"></p>
+            <p>叠加分析</p>
+
+             <div class="Fmid-2">
+                <span class="Fmid-2-one">分析运算类型<span class="defaltvalue">*</span></span>
                 <select name="operator" id="" class="Mselect">
                     <option value="Union">Union</option>
                     <option value="Clip">Clip</option>
@@ -74,46 +77,59 @@
                     <option value="XOR">XOR</option>
                 </select>
             </div>
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">叠加数据集中保留的字段</span>
-                <input type="text" name="sourceFields" value="TBMJ,DLMC" onfocus="if (value =='TBMJ,DLMC'){value =''}"
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">数据集中保留的字段</span>
+                <input class="Fmid-2-two" type="text" name="sourceFields" value="TBMJ,DLMC" onfocus="if (value =='TBMJ,DLMC'){value =''}"
                        onblur="if (value ==''){value='TBMJ,DLMC'}">
             </div>
 
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">容差</span>
-                <input type="text" name="tolerance" value="0.0" onfocus="if (value =='0.0'){value =''}"
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">容差</span>
+                <input class="Fmid-2-two" type="text" name="tolerance" value="0.0" onfocus="if (value =='0.0'){value =''}"
                        onblur="if (value ==''){value='0.0'}">
             </div>
 
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">面积计算字段</span>
-                <input type="text" name="fieldName" value="Area" onfocus="if (value =='Area'){value =''}"
+            <p id="dividingLine"></p>
+            <p>面积计算</p>
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">面积字段</span>
+                <input class="Fmid-2-two" type="text" name="fieldName" value="Area" onfocus="if (value =='Area'){value =''}"
                        onblur="if (value ==''){value='Area'}">
             </div>
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">变化检测计算表达式<span class="defaltvalue">*</span></span>
-                <input type="text" name="expression" value="abs(TBMJ - TBMJ_1) / TBMJ"
+
+            <p id="dividingLine"></p>
+            <p>变化检测</p>
+
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">检测表达式<span class="defaltvalue">*</span></span>
+                <input type="text" class="Fmid-2-two" name="expression" value="abs(TBMJ - TBMJ_1) / TBMJ"
                        onfocus="if (value =='abs(TBMJ - TBMJ_1) / TBMJ'){value =''}"
                        onblur="if (value ==''){value='abs(TBMJ - TBMJ_1) / TBMJ'}">
             </div>
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">变化检测结果字段<span class="defaltvalue">*</span></span>
-                <input type="text" name="变化检测结果字段" value="difference"
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">结果字段<span class="defaltvalue">*</span></span>
+                <input type="text" class="Fmid-2-two" name="变化检测结果字段" value="difference"
                        onfocus="if (value =='difference'){value =''}" onblur="if (value ==''){value='difference'}">
             </div>
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">属性统计表达式</span>
-                <input type="text" name="stats" value="Area,Sum,Area"
+
+            <p id="dividingLine"></p>
+            <p>属性统计</p>
+
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">统计表达式</span>
+                <input class="Fmid-2-two" type="text" name="stats" value="Area,Sum,Area"
                        onfocus="if (value =='Area,Sum,Area'){value =''}"
                        onblur="if (value ==''){value='Area,Sum,Area'}">
             </div>
-            <div class="Fmid-1">
-                <span class="Fmid-1-one">属性统计分组字段</span>
-                <input type="text" name="groupFields" value="DLMC,DLMC_1"
+            <div class="Fmid-2">
+                <span class="Fmid-2-one">统计分组字段</span>
+                <input class="Fmid-2-two" type="text" name="groupFields" value="DLMC,DLMC_1"
                        onfocus="if (value =='DLMC,DLMC_1'){value =''}" onblur="if (value ==''){value='DLMC,DLMC_1'}">
             </div>
-            <div class="Fmid-1">
+
+            <p id="dividingLine"></p>
+
+            <div class="Fmid-1" style="margin-top: 15px;">
                 <span class="Fmid-1-one">叠加结果保存路径<span class="defaltvalue">*</span></span>
                 <input type="text"
                        value="sdx --server=/home/yanshi0429/data/LanduseResult.udbx --dbType=udbx --dataset=aaa"
@@ -121,7 +137,7 @@
             </div>
             <div class="Fmid-1">
                 <span class="Fmid-1-one">叠加结果数据集名<span class="defaltvalue">*</span></span>
-                <input type="text" name="outputDatasetName" value="DLTB_Union"
+                <input type="text" name="outputDatasetName" id="outputDatasetName" value="DLTB_Union"
                        onfocus="if (value =='DLTB_Union'){value =''}" onblur="if (value ==''){value='DLTB_Union'}">
             </div>
 
@@ -140,8 +156,8 @@
     <table style="display: inline-block;width: auto" class="table table-condensed table-bordered">
         <thead>
         <tr>
-            <th>一调地类名称</th>
             <th>二调地类名称</th>
+            <th>三调地类名称</th>
             <th>面积</th>
         </tr>
         </thead>
@@ -149,7 +165,7 @@
         </tbody>
     </table>
 
-    <div id="pagination" class="m-style"></div>
+    <div id="pagination" class="m-style"></div> 
 </div>
 <script>
     var Box = document.getElementById('boxs');
@@ -176,8 +192,8 @@
             init({
                 url: yidiao,
                 callback: function (r) {
-                    addlayer(r.result, {layername: "一调", layerGroup: "base", opacity: 1});
-                    init({url: erdiao, layername: "二调", layerGroup: "base", opacity: 1});
+                    addlayer(r.result, {layername: "二调", layerGroup: "base", opacity: 1});
+                    init({url: erdiao, layername: "三调", layerGroup: "base", opacity: 1});
                 }
             });
         }
@@ -303,8 +319,9 @@
         }
         // console.log(jsonObj); // object 表单json
         // console.log(data); // string
-        Adata["processes"]["20ef9b62-03f6-43b2-904c-141f8d648aa4"]["bdt-vec-io:readasfeaturerdd"]["dataConnInfo"] = jsonObj["20ef9b62-03f6-43b2-904c-141f8d648aa4"]; // 一调地类图斑数据路径
-        Adata["processes"]["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"]["bdt-vec-io:readasfeaturerdd"]["dataConnInfo"] = jsonObj["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"];  // 二调地类图斑数据路径
+
+        Adata["processes"]["20ef9b62-03f6-43b2-904c-141f8d648aa4"]["bdt-vec-io:readasfeaturerdd"]["dataConnInfo"] = jsonObj["20ef9b62-03f6-43b2-904c-141f8d648aa4"]; // 二调地类图斑数据路径
+        Adata["processes"]["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"]["bdt-vec-io:readasfeaturerdd"]["dataConnInfo"] = jsonObj["f2fccedf-7f51-4641-9a57-9aa4cd5e7058"];  // 三调地类图斑数据路径
 
         Adata["processes"]["92693d20-db9d-42cc-8747-369db3605464"]["bdt-vec:overlayanalyst"]
             ["operator"] = jsonObj["operator"]; // 叠加分析运算类型
@@ -318,7 +335,7 @@
 
         Adata["processes"]["8d0a7851-8fa7-42f0-beda-6af47c36c207"]["bdt-vec-io:saveas"]["dataConnInfo"] = jsonObj["bdt-vec-io:saveas"];  // 叠加结果保存路径
 
-        // Adata["processes"]["b22a2f56_523b7"]["outputDatasetName"]= jsonObj["outputDatasetName"]; // 叠加结果数据集名
+        // Adata["processes"]["8d0a7851-8fa7-42f0-beda-6af47c36c207"]["bdt-vec-io:saveas"]["dataConnInfo"] = jsonObj["outputDatasetName"]; // 叠加结果数据集名
 
         var dataJson = JSON.stringify(Adata);
         // console.log(dataJson);
