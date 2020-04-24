@@ -43,6 +43,8 @@ function addlayer(result, params) {
         });
         let layerSwitcher = new ol.control.LayerSwitcher();
         map.addControl(layerSwitcher);
+        var control = new ol.supermap.control.ScaleLine();
+        map.addControl(control)
     };
     let lon = 0, lat = 0;
     let view;

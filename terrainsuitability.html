@@ -135,7 +135,11 @@
         </div>
     </form>
 </div>
-
+<div style="text-align:center;left: 0px;top:25%;position: absolute;width: 10%">
+    <table id="colorForm" style="background-color:white;display: inline-block;width: auto"
+           class="table table-condensed">
+    </table>
+</div>
 <script>
     var Box = document.getElementById('box');
     var Btn = document.getElementById('btn');
@@ -197,7 +201,7 @@
                             $("#success").show();
                             $("#loading").hide();
                             init({url: url, layername: "result", layerGroup: "result"});
-
+                            addcolormap("colorForm", "适应性");
                         },
                         error: function (jqXHR) {
                             $("#false").show();

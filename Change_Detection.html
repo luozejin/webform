@@ -24,6 +24,7 @@
     <script type="text/javascript" src="openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.js"></script>
     <script type="text/javascript" src="InitMap.js"></script>
     <script src="js/jquery.pagination.js"></script>
+    <script src="colormap.js"></script>
 </head>
 <style>
     .layer-switcher {
@@ -49,18 +50,18 @@
             <span id="Ferr">×</span>
         </div>
         <div class="Fmid">
-            <div class="Fmid-1" style="margin-top: 20px;">
-                <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
-                <input type="text"
-                       value="sdx --server=/home/yanshi0429/data/Landuse2.udbx --dbType=udbx --dataset=DLTB_2"
-                       name="readasfeaturerdd_1-dataConnInfo">
-            </div>
-
             <div class="Fmid-1">
-                <span class="Fmid-1-one">三调地类图斑数据路径<span class="defaltvalue">*</span></span>
+                <span class="Fmid-1-one">二调地类图斑数据路径<span class="defaltvalue">*</span></span>
                 <input type="text"
                        value="sdx --server=/home/yanshi0429/data/Landuse2.udbx --dbType=udbx --dataset=DLTB_ed_2"
                        name="readasfeaturerdd-dataConnInfo">
+            </div>
+
+            <div class="Fmid-1" style="margin-top: 20px;">
+                <span class="Fmid-1-one">三调地类图斑数据路径<span class="defaltvalue">*</span></span>
+                <input type="text"
+                       value="sdx --server=/home/yanshi0429/data/Landuse2.udbx --dbType=udbx --dataset=DLTB_2"
+                       name="readasfeaturerdd_1-dataConnInfo">
             </div>
 
             <p id="dividingLine"></p>
@@ -155,6 +156,11 @@
 
     <div id="pagination" class="m-style"></div>
 </div>
+<div style="text-align:center;left: 0px;top:25%;position: absolute;width: 10%">
+    <table id="colorForm" style="background-color:white;display: inline-block;width: auto"
+           class="table table-condensed">
+    </table>
+</div>
 <script>
     var Box = document.getElementById('boxs');
     var Btn = document.getElementById('Fbtn');
@@ -171,22 +177,23 @@
 
 <script type="text/javascript">
     var base = "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China";
-    var yidiao = "http://192.168.12.34:8090/iserver/services/map-Landuse2/rest/maps/DLTB_2@Landuse";
+    var sandiao = "http://192.168.12.34:8090/iserver/services/map-Landuse2/rest/maps/DLTB_2@Landuse";
     var erdiao = "http://192.168.12.34:8090/iserver/services/map-Landuse2/rest/maps/DLTB_ed_2@Landuse";
     var params = {
         url: base,
         callback: function (result) {
             result && result.result && addlayer(result.result, {layername: "底图", layerGroup: "base"});
             init({
-                url: yidiao,
+                url: erdiao,
                 callback: function (r) {
                     addlayer(r.result, {layername: "二调", layerGroup: "base", opacity: 1});
-                    init({url: erdiao, layername: "三调", layerGroup: "base", opacity: 1});
+                    init({url: sandiao, layername: "三调", layerGroup: "base", opacity: 1});
                 }
             });
         }
     };
     init(params);
+    addcolormap("colorForm", "变化检测");
     $('#Fbit').click(function () {
         var formData = $('#boxs').serializeArray();
         var postJson = {};
@@ -270,9 +277,9 @@
                     var mapname = temp[temp.length - 2].replace("map-", "");
                     var url = end.serviceAddress + "/maps/" + mapname;
                     addresult(url);
-
                     $("#loading").hide();
                     $("#success").show();
+                    addcolormap("colorForm", "ifchange");
                 } catch (e) {
                     $("#loading").hide();
                     $("#false").show();
