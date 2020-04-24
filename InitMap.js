@@ -129,8 +129,8 @@ function addlayer(result, params) {
     }
 
     view = new ol.View({
-        center: [(originResult.bounds.left + originResult.bounds.right) / 2, (originResult.bounds.bottom + originResult.bounds.top) / 2],
-        zoom: zoom,
+        center: params.center || [(originResult.bounds.left + originResult.bounds.right) / 2, (originResult.bounds.bottom + originResult.bounds.top) / 2],
+        zoom: params.zoom || zoom,
         projection: projection,
         resolutions: visableResolution
     });
