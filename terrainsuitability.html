@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="Font-Awesome-3.2.1/css/font-awesome.css">
 
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol.js"></script>
+    <script type="text/javascript" src="libs/dist/openlayers/4.6.5/ol-debug.js"></script>
     <script type="text/javascript" src="openlayers/iclient-openlayers.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -224,8 +224,17 @@
 </script>
 
 <script>
-    var url = "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4326";
-    init({url: url, layername: "底图", layerGroup: "base", center: [110, 35], zoom: 4});
+    var base = "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4326";
+    var dem = "http://192.168.12.34:8090/iserver/services/map-ASTGTM2_N40E116_dem/rest/maps/ASTGTM2_N40E116_dem@ASTGTM2_N40E116_dem4";
+
+    init({
+        url: base,
+        callback: function (r) {
+            addlayer(r.result, {layername: "底图", layerGroup: "base", opacity: 1});
+            // Tianditu();
+            init({url: dem, layername: "北京", layerGroup: "base", opacity: 1});
+        }
+    });
 </script>
 </body>
 

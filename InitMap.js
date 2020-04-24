@@ -163,6 +163,33 @@ function addlayer(result, params) {
 
 }
 
+function Tianditu() {
+    map = new ol.Map({
+        target: 'map',
+        layers: [baseGroup, overlayGroup],
+        view: new ol.View({
+            center: [120.14805, 30.26971],
+            projection: ol.proj.get("EPSG:4326"),
+            zoom: 3,
+            maxZoom: 17,
+            minZoom: 1
+        })
+    });
+    let layerSwitcher = new ol.control.LayerSwitcher();
+    map.addControl(layerSwitcher);
+    var control = new ol.supermap.control.ScaleLine();
+    map.addControl(control);
+    let layer = new ol.layer.Tile({
+        opacity: 1,
+        title: "天地图",
+        source: new ol.source.Tianditu({
+            key: "25c67c1243ee09895f3775fd8c5c0421",
+            layerType: 'ter'
+        })
+    });
+    baseGroup.getLayers().push(layer);
+}
+
 function getProjection(epsgCodeStr, bounds, resolutions) {
     return new L.Proj.CRS(epsgCodeStr, "", {
         bounds: L.bounds([bounds.left, bounds.bottom], [bounds.right, bounds.top]),
