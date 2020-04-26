@@ -4,16 +4,16 @@
 }
 #boxs {
   width: 423px;
-  height: 77%;
+    height: 93%;
   background: #fff;
   border: #d3d3d3 solid 1px;
   margin: 0 auto;
   position: absolute;
-  top: 50px;
+    top: 50px;
   right: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-padding-top: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-padding-top: 500px;
 }
 .Ftop {
   height: 35px;
