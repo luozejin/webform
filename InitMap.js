@@ -1,4 +1,4 @@
-var map, url, options = {};
+var map, url, options = {}, isMvt = false;
 var overlayGroup = new ol.layer.Group({
     title: 'result',
     layers: []
@@ -11,6 +11,7 @@ var layerObj, mapName, projection;
 
 function init(params) {
     url = params.url;
+    isMvt = params.isMvt ? params.isMvt : false;
     if (params.callback) {
         new ol.supermap.MapService(url).getMapInfo(params.callback);
     } else {
@@ -20,11 +21,11 @@ function init(params) {
     }
 }
 
-function addresult(url) {
+function addresult(url, title) {
     options.url = url;
     options.cacheEnabled = false;
     let layer = new ol.layer.Tile({
-        title: "result",
+        title: title ? title : "result",
         source: new ol.source.TileSuperMapRest(options)
     });
     overlayGroup.getLayers().clear();
@@ -32,6 +33,8 @@ function addresult(url) {
 }
 
 function addlayer(result, params) {
+    if (!result)
+        return;
     var layername = params.layername;
     var layerGroup = params.layerGroup;
     var opacity = params.opacity;
@@ -49,7 +52,7 @@ function addlayer(result, params) {
     let lon = 0, lat = 0;
     let view;
     let originResult = result;
-    let visableResolution = [];
+    let visableResolution = calVisableResolutions(originResult);
     let attrib = 'Map data &copy; 2013 Lantm?teriet, Imagery &copy; 2013 SuperMap';
     projection = 'EPSG:3857';
     let zoom = 0;
@@ -65,6 +68,23 @@ function addlayer(result, params) {
         let resolution;
         if (originResult.prjCoordSys.coordUnit) {
             resolution = scaleToResolution(originResult.scale, 96, originResult.prjCoordSys.coordUnit);
+        }
+
+        if (isMvt) {
+            var styleJson = getVectorStyle();
+            // 如果style.json中有indexbounds，那么就根据indexbounds计算地图的缩放层级zoom
+            if (styleJson && styleJson.metadata && styleJson.metadata.indexbounds) {
+                var indexbounds = styleJson.metadata.indexbounds;
+                if (indexbounds.length == 4) {
+                    envelope = {};
+                    envelope.left = indexbounds[0];
+                    envelope.bottom = indexbounds[1];
+                    envelope.right = indexbounds[2];
+                    envelope.top = indexbounds[3];
+                }
+            } else {
+                envelope = getProjectionExtent();
+            }
         }
 
         if (visableResolution.length == 0) {
@@ -102,7 +122,9 @@ function addlayer(result, params) {
                 }
             }
         }
-        if (originResult.prjCoordSys.epsgCode == "4326" || originResult.prjCoordSys.type == "PCS_EARTH_LONGITUDE_LATITUDE") {
+        if (isMvt && originResult.prjCoordSys.epsgCode && originResult.prjCoordSys.epsgCode != -1000 && originResult.prjCoordSys.epsgCode != -1) {
+            projection = 'EPSG:' + originResult.prjCoordSys.epsgCode;
+        } else if (originResult.prjCoordSys.epsgCode == "4326" || originResult.prjCoordSys.type == "PCS_EARTH_LONGITUDE_LATITUDE") {
             lon = (originResult.bounds.left + originResult.bounds.right) / 2;
             lat = (originResult.bounds.bottom + originResult.bounds.top) / 2;
             projection = 'EPSG:4326';
@@ -130,6 +152,7 @@ function addlayer(result, params) {
         visableResolution = tileGrid.getResolutions();
     }
 
+
     view = new ol.View({
         center: params.center || [(originResult.bounds.left + originResult.bounds.right) / 2, (originResult.bounds.bottom + originResult.bounds.top) / 2],
         zoom: params.zoom || zoom,
@@ -148,17 +171,62 @@ function addlayer(result, params) {
     options.url = url;
     options.tileGrid = tileGrid;
     options.cacheEnabled = false;
-    let layer = new ol.layer.Tile({
-        opacity: opacity || 1,
-        title: layername,
-        source: new ol.source.TileSuperMapRest(options)
-    });
+    let layer;
+    if (isMvt) {
+        var format = new ol.format.MVT({
+            featureClass: ol.Feature
+        });
+        format.defaultDataProjection = new ol.proj.Projection({
+            code: projection,
+            units: ol.proj.Units.TILE_PIXELS
+        });
 
-    if (layerGroup === "result") {
-        overlayGroup.getLayers().clear();
-        overlayGroup.getLayers().push(layer);
-    } else if (layerGroup === "base") {
-        baseGroup.getLayers().push(layer);
+        var origin = [envelope.left, envelope.top];
+        var styleResolutions = getStyleResolutions(envelope);
+        var newstyle = new ol.supermap.MapboxStyles({
+            style: getVectorStyle(),
+            source: originResult.name,
+            resolutions: styleResolutions,
+            map: map
+        });
+        newstyle.on('styleloaded', function () {
+            layer = new ol.layer.VectorTile({
+                title: layername,
+                //设置避让参数
+                declutter: true,
+                source: new ol.source.VectorTileSuperMapRest({
+                    url: url,
+                    projection: projection,
+                    tileGrid: new ol.tilegrid.TileGrid({
+                        resolutions: styleResolutions,
+                        origin: origin,
+                        tileSize: 512
+                    }),
+                    tileType: "ScaleXY",
+                    format: format
+                }),
+                style: newstyle.getStyleFunction()
+            });
+            if (layerGroup === "result") {
+                overlayGroup.getLayers().clear();
+                overlayGroup.getLayers().push(layer);
+            } else if (layerGroup === "base") {
+                baseGroup.getLayers().push(layer);
+            }
+        });
+    } else {
+        layer = new ol.layer.Tile({
+            opacity: opacity || 1,
+            title: layername,
+            source: new ol.source.TileSuperMapRest(options)
+        });
+
+        if (layerGroup === "result") {
+            overlayGroup.getLayers().clear();
+            overlayGroup.getLayers().push(layer);
+        } else if (layerGroup === "base") {
+            baseGroup.getLayers().push(layer);
+        }
     }
 
 }
@@ -212,6 +280,20 @@ function getProjectionExtent() {
     return null;
 
 }
+
+
+function getVectorStyle() {
+    var requestUrl = url;
+    requestUrl = requestUrl + "/" + "tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true";
+    var commit = new Requester();
+    try {
+        var style = commit.sendRequestWithResponse(requestUrl, "GET", null);
+        return JSON.parse(style);
+    } catch (ex) {
+        return null;
+    }
+}
+
 
 function scaleToResolution(scale, dpi, mapUnit) {
     let inchPerMeter = 1 / 0.0254;
@@ -311,7 +393,7 @@ let Requester = function () {
             }
         };
         xhr.send(entry);
-    }
+    };
     /**
      * 发送一个同步请求。
      */
@@ -327,4 +409,56 @@ let Requester = function () {
         }
         return xhr.responseText;
     }
+};
+
+function calVisableResolutions(mapContent) {
+    var hasVisibleScales = mapContent.visibleScales;
+    var hasViewBounds = mapContent.viewBounds;
+    var hasViewer = mapContent.viewer;
+    var hasMapUnit = mapContent.prjCoordSys && mapContent.prjCoordSys.coordUnit;
+    if (hasVisibleScales && hasViewBounds && hasViewer && hasMapUnit) {
+        var dpi = mapContent.dpi;
+        var mapUnit = mapContent.prjCoordSys.coordUnit;
+        var visableResolutions = [];
+        for (var i = 0; i < mapContent.visibleScales.length; i++) {
+            visableResolutions[i] = scaleToResolution(mapContent.visibleScales[i], dpi, mapUnit);
+        }
+        return visableResolutions;
+    } else {
+        return [];
+    }
+}
+
+
+function scaleToResolution(scale, dpi, mapUnit) {
+    // double inchPerMeter = 1 / 2.5399999918E-2;
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+
+    return resolution;
+}
+
+/**
+ * 根据地图单位计算米。
+ * @param mapUnit 地图单位。
+ * @return 米。
+ */
+function getMeterPerMapUnit(mapUnit) {
+    var earchRadiusInMeters = 6378137;// 6371000;
+    var meterPerMapUnit;
+    if (mapUnit === "METER") {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === "DEGREE") {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === "KILOMETER") {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === "INCH") {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === "FOOT") {
+        meterPerMapUnit = 0.3048;
+    }
+    return meterPerMapUnit;
 }

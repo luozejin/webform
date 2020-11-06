@@ -49,8 +49,6 @@
                 zoom: 2,
                 projection: 'EPSG:4326'
             })
-
-
         });
 
 
@@ -61,7 +59,6 @@
             var mapName = "china";
             var url = "http://192.168.113.209:7090/iserver/services/map-Chinaslope/rest/maps/" + mapName;
             var layersUrl = url + "/layers/" + mapName + ".json";
-
 
             fetch(layersUrl).then(function (response) {
                 response.json().then(function (layersObj) {
@@ -83,17 +80,11 @@
                     commit.open("POST", encodeURI(uri), false, "", "");
                     commit.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                     commit.send(str);
-
-                   
                     var response = json_parse(commit.responseText, null);
-
 
                     //获取请求返回的layrid
                     var layersID = response.newResourceID;
-
                     console.log("请求得到的临时图层id为：" + layersID);
-
-
                     if (layersID) {
                         var themeLayer = new ol.layer.Tile({
                             source: new ol.source.TileSuperMapRest({
@@ -107,11 +98,8 @@
                         });
                         map.addLayer(themeLayer);
                     }
-
                 });
             });
-
-
         }
 
         function json2str(o) { 
@@ -165,20 +153,14 @@
                 }
             }
 
-
             if (parameter.themes && parameter.themes.length > 0) {
                 jsonParameters = jsonParameters.substring(0, jsonParameters.length - 1);
             }
             jsonParameters += "]}";
-
             jsonParameters += "}]";
             return jsonParameters;
         }
     </script>
-
-
-
-
 </body>
 
 </html>

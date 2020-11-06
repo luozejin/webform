@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分布式GIS演示</title>
+
+    <link rel="stylesheet" href="css/pagination.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="css/mapul.css"/>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <link href="mapbox/mapbox-gl.css" rel="stylesheet">
+    <script type="text/javascript" src="mapbox/mapbox-gl.js"></script>
+    <link href="mapbox/plugins/mapbox-gl-draw.css" rel="stylesheet">
+    <script type="text/javascript" src="mapbox/plugins/mapbox-gl-draw.js"></script>
+    <script type="text/javascript" src="mapbox/iclient9-mapboxgl.js"></script>
+    <script type="text/javascript" src="proj4/proj4.js"></script>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<body>
+<style>
+    #menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 5px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    #menu a {
+        font-size: 13px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+    }
+
+    #menu a:last-child {
+        border: none;
+    }
+
+    #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+    }
+
+    #menu a.active {
+        background-color: #3887be;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #3074a4;
+    }
+</style>
+<div id="main">
+    <div class="mapTop">
+        <img src="img/logo.png"/>
+        <span class="topTitle">分布式GIS演示</span>
+    </div>
+    <nav id="menu"></nav>
+    <div id="map" style="width: 100%;height:94%"></div>
+
+</div>
+<script type="text/javascript">
+    var base = "http://172.16.16.8:8090/iserver/services/map-ugcv5-ImageChina/rest/maps/ImageChina";
+    var base_url = new URL(base);
+    base_url.hostname = window.location.hostname;
+    new mapboxgl.supermap.MapService(base_url.toString()).getMapInfo(result => {
+        addlayer(result.result, base_url.toString(), false);
+    });
+    var vector_layers = [
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb1/rest/maps/dltb_1",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb2/rest/maps/dltb_2",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb3/rest/maps/dltb_3",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb4/rest/maps/dltb_4",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb5/rest/maps/dltb_5"
+    ];
+    var vector_layers_restjsrs = [
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb1/restjsr/v1/vectortile/maps/dltb_1",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb2/restjsr/v1/vectortile/maps/dltb_2",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb3/restjsr/v1/vectortile/maps/dltb_3",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb4/restjsr/v1/vectortile/maps/dltb_4",
+        "http://172.16.16.8:8090/iserver/services/map-mvt-dltb5/restjsr/v1/vectortile/maps/dltb_5",
+    ];
+    var base = new URL(base);
+    var vectorMapLayers = [];
+    var map;
+
+    vector_layers.forEach((vector_layer, index) => {
+        var vector_layer_url = new URL(vector_layer);
+        vector_layer_url.hostname = window.location.hostname;
+        new mapboxgl.supermap.MapService(vector_layer_url.toString()).getMapInfo(result => {
+            var vector_layer_restjsr = vector_layers_restjsrs[index];
+            var vector_layer_restjsr_url = new URL(vector_layer_restjsr);
+            vector_layer_restjsr_url.hostname = window.location.hostname;
+            addlayer(result.result, vector_layer_restjsr_url.toString(), true);
+        });
+    });
+
+    // enumerate ids of the layers
+    var toggleableLayerIds = ['移除矢量图层'];
+
+    // set up the corresponding toggle button for each layer
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+        var id = toggleableLayerIds[i];
+
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.textContent = id;
+
+        link.onclick = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            vectorMapLayers.forEach(vectorMapLayer => {
+                var visibility = map.getLayoutProperty(vectorMapLayer, 'visibility');
+// toggle layer visibility by changing the layout object's visibility property
+                if (visibility === 'visible') {
+                    map.setLayoutProperty(vectorMapLayer, 'visibility', 'none');
+                    this.textContent = '添加矢量图层';
+                } else {
+                    this.textContent = '移除矢量图层';
+                    map.setLayoutProperty(vectorMapLayer, 'visibility', 'visible');
+                }
+            });
+            map.setLayoutProperty("simple-tiles-base", 'visibility', 'visible');
+        };
+
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+    map ? map.addControl(new mapboxgl.NavigationControl()) : '';
+
+    function addlayer(result, mapURL, isMVT) {
+        var originResult = result;
+        if (!originResult)
+            return;
+        var epsgCode = "EPSG:" + originResult.prjCoordSys.epsgCode;
+        //var maxBoundsarray = [proj4(epsgCode,"EPSG:4326",[originResult.bounds.left,originResult.bounds.bottom]),proj4("EPSG:3857","EPSG:4326",[originResult.bounds.right,originResult.bounds.top])];
+        var minZoomLevel = 0;
+        var maxZoomLevel = 22;
+        var m_listScaleLevel = [];
+        var visibleScales;
+        var centerPoint;
+        if (originResult.prjCoordSys.epsgCode == 3857) {
+            visibleScales = [
+                1.0 / 295829355.454566,
+                1.0 / 147914677.727283,
+                1.0 / 73957338.8636414,
+                1.0 / 36978669.4318207,
+                1.0 / 18489334.7159103,
+                1.0 / 9244667.35795517,
+                1.0 / 4622333.67897759,
+                1.0 / 2311166.83948879,
+                1.0 / 1155583.4197444,
+                1.0 / 577791.709872198,
+                1.0 / 288895.854936099,
+                1.0 / 144447.92746805,
+                1.0 / 72223.9637340248,
+                1.0 / 36111.9818670124,
+                1.0 / 18055.9909335062,
+                1.0 / 9027.9954667531,
+                1.0 / 4513.99773337655,
+                1.0 / 2256.99886668828,
+                1.0 / 1128.49943334414,
+                1.0 / 564.249716672069,
+                1.0 / 282.124858336034,
+                1.0 / 141.062429168017];
+            centerPoint = proj4(epsgCode, "EPSG:4326", [originResult.center.x, originResult.center.y]);
+        } else {
+            visibleScales = getScales(360, originResult.prjCoordSys.coordUnit);
+            centerPoint = [originResult.center.x, originResult.center.y];
+        }
+
+        if (originResult.visibleScales && originResult.visibleScales.length > 0) {
+            var minZoomScale = originResult.visibleScales[0];
+            var maxZoomScale = originResult.visibleScales[originResult.visibleScales.length - 1];
+            var level = null;
+            var difference = null;
+            var temp;
+            for (var i = 0; i < originResult.visibleScales.length; i++) {
+                for (var j = 0; j <= visibleScales.length - 1; j++) {
+                    if (j == 0) {
+                        difference = Math.abs(originResult.visibleScales[i] - visibleScales[j]);
+                        level = 0;
+                        continue;
+                    }
+                    temp = Math.abs(originResult.visibleScales[i] - visibleScales[j]);
+                    if (difference > temp) {
+                        difference = temp;
+                        level = j;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (level >= 0) {
+                    m_listScaleLevel.push(level);
+                }
+            }
+            minZoomLevel = m_listScaleLevel[0];
+            maxZoomLevel = m_listScaleLevel[m_listScaleLevel.length - 1];
+        }
+
+        //强制写成2
+        minZoomLevel = 2;
+
+        if (isMVT) {
+            var url = mapURL;
+            url += "/style.json";
+            $.ajax({
+                url: url,
+                success: function (mvtStyle) {
+                    var zoom = mvtStyle.zoom == null ? minZoomLevel : mvtStyle.zoom;
+                    if (map) {
+                        let sources = mvtStyle.sources;
+                        let key = Object.keys(sources)[0];
+                        map.addSource(key, sources[key]);
+                        mvtStyle.layers.forEach(layer => {
+                            if (layer.type !== "background") {
+                                //数据太大，先写死
+                                layer.minzoom = 8;
+                                layer.layout = {
+// make layer visible by default
+                                    'visibility': 'visible'
+                                };
+                                vectorMapLayers.push(layer.id);
+                                map.addLayer(layer);
+                            }
+                        });
+                        map.setZoom(zoom);
+                        map.setCenter(centerPoint);
+                    } else {
+                        map = new mapboxgl.Map({
+                            container: 'map', // container id
+                            style: mvtStyle,
+                            center: centerPoint,// starting position
+//						maxBounds:new mapboxgl.LngLatBounds(maxBoundsarray),
+                            zoom: zoom, // starting zoom
+                            minZoom: minZoomLevel,
+                            maxZoom: maxZoomLevel,
+                            crs: epsgCode
+                        });
+                    }
+
+                }
+            });
+        } else {
+            if (map) {
+                map.addLayer({
+                    id: 'simple-tiles-base',
+                    type: 'raster',
+                    source: {
+                        type: 'raster',
+                        tileSize: 256,
+                        //format:瓦片格式，默认为'png'；
+                        tiles: [mapURL],
+                        rasterSource: 'iserver'
+                    }
+                });
+            } else {
+                map = new mapboxgl.Map({
+                    container: 'map', // container id
+                    style: {
+                        version: 8,
+                        sources: {
+                            'raster-tiles-base': {
+                                type: 'raster',
+                                tileSize: 256,
+                                //format:瓦片格式，默认为'png'；
+                                tiles: [mapURL],
+                                rasterSource: 'iserver'
+                            }
+                        },
+                        layers: [
+                            {
+                                id: 'simple-tiles-base',
+                                type: 'raster',
+                                source: 'raster-tiles-base',
+                                layout: {
+// make layer visible by default
+                                    'visibility': 'visible'
+                                },
+                            }
+                        ]
+                    },
+                    crs: epsgCode, // 或者 mapboxgl.CRS.EPSG4326  或者 new mapboxgl.CRS('EPSG:4326',[-180,-90,180,90]);
+                    center: centerPoint,
+                    zoom: minZoomLevel,
+                    minZoom: minZoomLevel,
+                    maxZoom: maxZoomLevel,
+                });
+            }
+        }
+    }
+
+    // 把tile地址的宽高都设置成512，因为MapBoxGL只支持512的瓦片
+    function setTileSize(tiles) {
+        var tile = tiles[0];
+        var url = new URL(tile);
+        url.searchParams.set("height", 512);
+        url.searchParams.set("width", 512);
+        tile = url.toString();
+        var split = tile.split("?");
+        // searchParams.set方法会把uri转义了，需要再反转过来
+        tiles[0] = split[0] + "?" + decodeURIComponent(split[1]);
+    };
+
+    function getFirst(obj) {
+        for (var key in obj) {
+            return obj[key];
+        }
+    };
+
+    function getScales(width, mapUnit) {
+        var styleResolutions = [];
+        var temp = Math.abs(width) / 512;
+        temp = resolutionToScale(temp, 96, mapUnit);
+        for (var i = 0; i < 22; i++) {
+            if (i == 0) {
+                styleResolutions[i] = temp;
+                continue;
+            }
+            temp = temp * 2;
+            styleResolutions[i] = temp;
+        }
+        return styleResolutions;
+    }
+
+    function resolutionToScale(resolution, dpi, mapUnit) {
+        var inchPerMeter = 1 / 0.0254;
+        // 地球半径。
+        var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
+        var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+        scale = 1 / scale;
+        return scale;
+    }
+
+    function getMeterPerMapUnit(mapUnit) {
+        var earchRadiusInMeters = 6378137;// 6371000;
+        var meterPerMapUnit;
+        if (mapUnit == "METER") {
+            meterPerMapUnit = 1;
+        } else if (mapUnit == "DEGREE") {
+            // 每度表示多少米。
+            meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+        } else if (mapUnit == "KILOMETER") {
+            meterPerMapUnit = 1.0E-3;
+        } else if (mapUnit == "INCH") {
+            meterPerMapUnit = 1 / 2.5399999918E-2;
+        } else if (mapUnit == "FOOT") {
+            meterPerMapUnit = 0.3048;
+        }
+        return meterPerMapUnit;
+    }
+</script>
+</body>
+
+</html>
