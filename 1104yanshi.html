@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分布式GIS演示</title>
+
+    <link rel="stylesheet" href="css/pagination.css"/>
+    <link href="libs/dist/openlayers/4.6.5/ol.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="openlayers/iclient-openlayers.css" type="text/css"/>
+    <link rel="stylesheet" href="css/Change_Detection.css"/>
+    <link rel="stylesheet" href="css/mapul.css"/>
+    <link rel="stylesheet" href="openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.css"/>
+    <link rel="stylesheet" href="Font-Awesome-3.2.1/css/font-awesome.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="openlayers/ol-debug.js"></script>
+    <script type="text/javascript" src="openlayers/olms.js"></script>
+    <script type="text/javascript" src="openlayers/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.js"></script>
+    <script type="text/javascript" src="InitMap.js"></script>
+    <script src="js/jquery.pagination.js"></script>
+    <script src="colormap.js"></script>
+</head>
+<style>
+    .layer-switcher {
+        position: absolute;
+        top: 0.5em;
+        left: 3.5em;
+        right: unset;
+        text-align: left;
+    }
+</style>
+<body style="background: #1E1E1E">
+<div id="main">
+    <div class="mapTop">
+        <img src="img/logo.png"/>
+        <span class="topTitle">分布式GIS演示</span>
+    </div>
+    <div id="map" style="width: 100%;height:93%"></div>
+
+</div>
+
+<script type="text/javascript">
+    var base = "http://172.16.16.8:8090/iserver/services/map-ugcv5-ImageChina/rest/maps/ImageChina";
+    var up = "http://localhost:8090/iserver/services/map-mvt-ChinaVector/rest/maps/ChinaVector";
+    var params = {
+        url: base,
+        callback: function (result) {
+            result && result.result && addlayer(result.result, {layername: "底图", layerGroup: "base"});
+            init({
+                url: up,
+                isMvt: true,
+                callback: function (r) {
+                    addlayer(r.result, {layername: "result", layerGroup: "result", opacity: 1});
+                }
+            });
+        }
+    };
+    init(params);
+
+</script>
+
+</body>
+</html>
